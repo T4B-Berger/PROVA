@@ -59,7 +59,6 @@ L’application intègre une sélection raisonnée du deck COMEX (et non un copi
 - Conserver une interface lisible, orientée décision.
 - Améliorer la narration sans surcharge ni duplication.
 - Maintenir la séparation stricte entre constat factuel et contenus prescriptifs.
-
 ## 8) Lisibilité des tableaux de segmentation
 Principe appliqué : chaque tableau croisé doit être lisible sans connaissance du questionnaire source.
 
