@@ -5,7 +5,7 @@
 
 ## État Git local
 - Working tree: propre
-- Dernier commit: `253705b` (`Update publish status after final push`)
+- Dernier commit: `179d6fb` (`Set publish status to current head commit`)
 
 ## Remote origin
 - `origin https://github.com/T4B-Berger/PROVA.git` (fetch/push)
@@ -19,7 +19,7 @@
 - Tentative 3 après nouveaux commits: `git push origin feat/survey-streamlit-pr`
   - Résultat: échec (même erreur d'authentification)
 - Tentative 4 (token): push via URL HTTPS authentifiée par token
-  - Résultat: succès (`d297de5..253705b`)
+  - Résultat: succès (`d297de5..179d6fb`)
 
 ## Méthode PR tentée
 - Méthode A (gh): indisponible (`gh` absent)
