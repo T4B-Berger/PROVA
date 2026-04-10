@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `4049b98` — Redesign Streamlit into transformation cockpit with governance views
+- voir `git log -1 --oneline`
 
 ## D. push effectué ou non
 - Oui, push effectué sur `origin/feat/survey-streamlit-pr`.
