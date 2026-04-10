@@ -1,35 +1,37 @@
 # Delivery status
 
 ## A. branche source
-- `hotfix/sidebar-toggle-navigation`
+- `hotfix/exec-readiness`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `d8b2af4` — Resolve merge conflicts with main for hotfix publication
+- `git log -1 --oneline`
 
 ## D. push effectué ou non
-- **Oui** (`git push` réussi)
+- En cours
 
 ## E. PR créée ou non
-- **Oui**
+- En cours
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/3
+- En cours
 
 ## G. statut de PR
-- `open` (ready for review, non draft)
+- En cours
 
 ## H. mergeable : oui/non
-- **Oui** (`mergeable=true`, `mergeable_state=clean`)
+- En cours
 
 ## I. prête à squash : oui/non
-- **Oui** (PR ouverte, mergeable, sans conflit)
+- En cours
 
 ## J. impact attendu en prod
-- **Pas encore visible maintenant** tant que la PR #3 n'est pas merge dans `main`.
+- Visible après merge de la PR hotfix vers `main`.
 
 ## K. action restante minimale
-1. Squash merge PR #3 vers `main`.
-2. Laisser le déploiement Streamlit redémarrer sur `main` (ou relancer manuellement si nécessaire).
+1. Push branche hotfix.
+2. Ouvrir PR.
+3. Passer ready for review.
+4. Squash merge.
