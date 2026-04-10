@@ -10,27 +10,26 @@
 - voir `git log -1 --oneline`
 
 ## D. push effectué ou non
-- Oui, push effectué sur `origin/feat/survey-streamlit-pr`.
+- Oui, branche source poussée sur `origin/feat/survey-streamlit-pr`.
 
 ## E. PR créée ou mise à jour
-- PR créée et mise à jour: #2
+- PR existante confirmée: #2
 
 ## F. URL de PR
 - https://github.com/T4B-Berger/PROVA/pull/2
 
 ## G. statut de PR : draft / ready / mergée
-- **ready for review** (non draft), non mergée.
+- **ready for review** (non draft), **open**, non mergée.
 
 ## H. validations exécutées
-- `python -m py_compile app/streamlit_app.py`
-- `timeout 15s streamlit run app/streamlit_app.py --server.headless true --server.port 8501`
-- Vérification des chemins sources de vérité et artefacts de pilotage.
-- Vérification anti-invention: recommandations explicitement marquées.
+- Vérification branche déployée attendue: `main` (contexte Streamlit Cloud).
+- Vérification diff `origin/main..origin/feat/survey-streamlit-pr` sur fichiers UI/UX.
+- Vérification existence/statut PR #2 via API GitHub.
 
 ## I. impact attendu en prod
-- Streamlit prod suit actuellement `main`.
-- Les changements de redesign sur `feat/survey-streamlit-pr` ne sont donc **pas encore visibles en prod**.
+- Streamlit prod suit `main`.
+- Les derniers changements UI/UX de la branche feature ne sont **pas** encore visibles en prod car la PR #2 n'est pas mergée.
 
 ## J. action restante minimale
 1. Merger la PR #2 vers `main` (squash recommandé).
-2. Déclencher un redeploy Streamlit Cloud (ou attendre auto-redeploy sur push main).
+2. Lancer un redeploy Streamlit (ou vérifier l'auto-redeploy après update de `main`).
