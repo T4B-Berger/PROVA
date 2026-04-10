@@ -1,45 +1,35 @@
 # Delivery status
 
 ## A. branche source
-- `feat/survey-streamlit-pr`
+- `hotfix/sidebar-toggle-navigation`
 
 ## B. branche cible
 - `main`
 
-## C. PR URL
-- https://github.com/T4B-Berger/PROVA/pull/2
+## C. dernier commit
+- `d8b2af4` — Resolve merge conflicts with main for hotfix publication
 
-## D. conflits détectés
-- `app/README.md` (add/add)
-- `app/streamlit_app.py` (add/add)
+## D. push effectué ou non
+- **Oui** (`git push` réussi)
 
-## E. résolution appliquée
-- Intégration de `origin/main` dans la branche feature.
-- `app/streamlit_app.py`: base conservée = version feature la plus récente fonctionnelle (cockpit redesign), sans suppression du correctif de boot (`scipy` utilisé, dépendances inchangées).
-- `app/README.md`: fusion manuelle en conservant à la fois:
-  - la doc de déploiement Streamlit (`requirements.txt` racine),
-  - la doc fonctionnelle/UI la plus récente.
-- `outputs/main_deploy_fix_status.md` de main conservé dans la branche feature.
+## E. PR créée ou non
+- **Oui**
 
-## F. validations exécutées
-- `python -m py_compile app/streamlit_app.py`
-- `timeout 15s streamlit run app/streamlit_app.py --server.headless true --server.port 8501`
-- Vérification absence de marqueurs de conflit (`<<<<<<<`, `=======`, `>>>>>>>`).
-- Vérification boot sans `ModuleNotFoundError`.
+## F. URL de PR
+- https://github.com/T4B-Berger/PROVA/pull/3
 
-## G. push effectué
-- Oui, push de la branche feature effectué après commit de merge.
+## G. statut de PR
+- `open` (ready for review, non draft)
 
-## H. PR toujours en conflit ou non
-- Non, PR #2 remise en état mergeable (conflits résolus côté branche source).
+## H. mergeable : oui/non
+- **Oui** (`mergeable=true`, `mergeable_state=clean`)
 
-## I. prête à squash ou non
-- Oui, prête à squash merge (PR open, non draft, cible `main`, conflits traités).
+## I. prête à squash : oui/non
+- **Oui** (PR ouverte, mergeable, sans conflit)
 
-## J. impact prod
-- Streamlit prod suit `main`.
-- Les changements de la PR #2 restent non visibles en prod tant que la PR n'est pas mergée.
+## J. impact attendu en prod
+- **Pas encore visible maintenant** tant que la PR #3 n'est pas merge dans `main`.
 
 ## K. action restante minimale
-1. Squash merge de la PR #2 vers `main`.
-2. Déclencher/revérifier le redeploy Streamlit Cloud sur `main`.
+1. Squash merge PR #3 vers `main`.
+2. Laisser le déploiement Streamlit redémarrer sur `main` (ou relancer manuellement si nécessaire).
