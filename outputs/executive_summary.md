@@ -1,34 +1,31 @@
-# Synthèse exécutive – Enquête IA
+# Executive summary – version sponsor
 
-## Contexte
-- Échantillon analysé: **70 répondants**.
-- Feuille utilisée: `Sheet1` (feuilles disponibles: Sheet1).
+## 1) Message principal (5 lignes max)
+L'adoption de l'IA est déjà engagée: 81,4% des répondants l'ont utilisée au travail sur les 30 derniers jours, et 70,0% en usage personnel (**certain**).
+Le niveau de maturité reste hétérogène: 59,4% se déclarent débutants (**certain**).
+Deux leviers pilotent l'usage pro: l'expertise et l'usage personnel (tests chi2 significatifs, **certain**).
+Le besoin de cadre et d'accompagnement est explicite dans les verbatims (**probable** à fort signal).
+Priorité sponsor: cadrer, former, industrialiser 2-3 cas d'usage métiers à ROI rapide.
 
-## 5 enseignements majeurs
-1. Adoption IA déjà active sur une part importante des répondants.
-2. Cas d'usage à valeur immédiate: rédaction, synthèse, recherche/analyse.
-3. Le gain de temps est le bénéfice central perçu.
-4. Les risques qualité (hallucinations/erreurs) restent un frein concret.
-5. Forte attente d'accompagnement opérationnel (formation et cadre commun).
+## 2) Ce qu'il faut retenir
+- Usage pro IA: 81.4% (57/70) – **certain**.
+- Débutants IA: 59.4% (41/69) – **certain**.
+- Top usages: research/prep, rédaction, traduction – **certain** sur base multi-réponses.
+- Top outil: ChatGPT (47 citations, 51.6%) – **certain**.
 
-## 3 points d'alerte
-- Qualité hétérogène des usages selon niveau d'expertise.
-- Risque de diffusion de contenus non vérifiés.
-- Limites de robustesse statistique sur certains sous-segments.
+## 3) Où sont les risques
+- Risque qualité/confiance des contenus (hallucinations) – **probable**.
+- Risque d'adoption inégale selon maturité (débutants majoritaires) – **certain**.
+- Risque de surinterprétation segmentaire (N=70) – **certain**.
 
-## 3 opportunités d'action
-- Standardiser les usages à fort impact.
-- Renforcer les compétences des équipes avec formats courts.
-- Transformer les early adopters en relais locaux.
+## 4) Où sont les opportunités
+- Gains immédiats sur tâches à forte charge (rédaction, synthèse, analyse) – **probable**.
+- Standardisation d'un kit de prompts commun – **exploratoire à confirmer par pilote**.
+- Réseau early adopters mobilisable (60% Yes parmi répondants à la question) – **probable**.
 
-## 5 recommandations priorisées
-1. Gouvernance et garde-fous immédiats.
-2. Formation ciblée par fonction.
-3. Bibliothèque de prompts validés.
-4. Tableau de bord d'impact trimestriel.
-5. Roadmap 2026 de cas d'usage priorisés.
-
-## Certitude / Probable / Incertain
-- **Certain** : tendances observées dans les distributions et verbatims collectés.
-- **Probable** : bénéfices opérationnels mesurables à court terme si accompagnement structuré.
-- **Incertain** : ampleur exacte des écarts par métier sans échantillons plus larges.
+## 5) 5 décisions/actions prioritaires
+1. Valider un cadre d'usage IA (qualité, confidentialité, validation humaine) sous 30 jours.
+2. Lancer un plan de formation court par métier (ateliers opérationnels).
+3. Sélectionner 3 cas d'usage 2026 avec KPI (temps gagné, qualité, adoption).
+4. Mettre en place un cockpit de suivi trimestriel (adoption, incidents, gains).
+5. Structurer un réseau d'early adopters comme relais d'exécution.
