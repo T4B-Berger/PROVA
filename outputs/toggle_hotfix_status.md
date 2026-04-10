@@ -1,13 +1,13 @@
 # Toggle hotfix status
 
 ## A. cause exacte de l’absence du toggle
-- L'implémentation précédente ne respectait pas le contrat de publication demandé (contrôle explicite Oui/Non + navigation basée sur listes explicites).
+- L'ancienne livraison ne garantissait pas un contrôle global explicite `Description seule` en `Oui/Non` branché sur des listes de pages dédiées.
 
 ## B. correction appliquée
-- Le contrôle `Description seule` avec choix `Oui` / `Non` pilote maintenant la navigation via `FACTUAL_PAGES` et `PRESCRIPTIVE_PAGES`.
+- Navigation pilotée par deux listes explicites (`FACTUAL_PAGES`, `PRESCRIPTIVE_PAGES`) et contrôle global `Description seule`.
 
 ## C. emplacement exact du contrôle dans la sidebar
-- Contrôle placé avant la radio de navigation dans la sidebar.
+- Contrôle `Description seule` affiché avant la radio de navigation.
 
 ## D. pages visibles en mode Oui
 - Accueil
@@ -28,10 +28,8 @@
 
 ## F. validations exécutées
 - `python -m py_compile app/streamlit_app.py` ✅
-- `timeout 15s streamlit run app/streamlit_app.py --server.headless true --server.port 8501` ✅ (boot local validé)
+- `timeout 15s streamlit run app/streamlit_app.py --server.headless true --server.port 8501` ✅
+- Publication GitHub hotfix: push ✅, PR ✅ (https://github.com/T4B-Berger/PROVA/pull/3)
 
 ## G. limites restantes
-- Publication GitHub bloquée par authentification:
-  - `git push -u origin hotfix/sidebar-toggle-navigation`
-  - `fatal: could not read Username for 'https://github.com': No such device or address`
-- Sans push, la PR ne peut pas être créée dans cet environnement.
+- Aucune limite technique bloquante côté PR: PR #3 est ouverte, non draft, mergeable.

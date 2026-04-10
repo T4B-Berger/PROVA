@@ -7,32 +7,29 @@
 - `main`
 
 ## C. dernier commit
-- `803b9fe` — Hotfix sidebar Description seule navigation and status artifacts
+- `d8b2af4` — Resolve merge conflicts with main for hotfix publication
 
 ## D. push effectué ou non
-- **Non**
-- Tentative exécutée: `git push -u origin hotfix/sidebar-toggle-navigation`
-- Erreur: `fatal: could not read Username for 'https://github.com': No such device or address`
+- **Oui** (`git push` réussi)
 
 ## E. PR créée ou non
-- **Non** (push impossible)
+- **Oui**
 
 ## F. URL de PR
-- N/A (non créable tant que le push échoue)
+- https://github.com/T4B-Berger/PROVA/pull/3
 
 ## G. statut de PR
-- N/A
+- `open` (ready for review, non draft)
 
 ## H. mergeable : oui/non
-- N/A
+- **Oui** (`mergeable=true`, `mergeable_state=clean`)
 
 ## I. prête à squash : oui/non
-- N/A
+- **Oui** (PR ouverte, mergeable, sans conflit)
 
 ## J. impact attendu en prod
-- **Non visible maintenant**: la branche hotfix n'est pas publiée sur GitHub, donc pas de merge vers `main`.
+- **Pas encore visible maintenant** tant que la PR #3 n'est pas merge dans `main`.
 
 ## K. action restante minimale
-1. Fournir une authentification GitHub valide (PAT/SSH) dans cet environnement.
-2. Rejouer `git push -u origin hotfix/sidebar-toggle-navigation`.
-3. Créer la PR vers `main`, la passer ready for review, puis squash merge.
+1. Squash merge PR #3 vers `main`.
+2. Laisser le déploiement Streamlit redémarrer sur `main` (ou relancer manuellement si nécessaire).
