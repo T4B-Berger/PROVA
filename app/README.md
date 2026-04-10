@@ -1,26 +1,40 @@
 # App Streamlit – PROVA IA Transformation Cockpit
 
 ## Finalité
-Cette app n'est pas un explorateur analytique lourd. Elle sert au **pilotage de transformation IA**: décisions, gouvernance, portefeuille 2026, enablement, roadmap.
+Cette app sert au **pilotage de transformation IA** (décisions, gouvernance, portefeuille 2026, enablement, roadmap), sans réouvrir l'analyse de fond.
+
+## Dépendances de déploiement Streamlit Cloud
+Le déploiement utilise **`requirements.txt` à la racine**.
+
+## Lancement local
+```bash
+pip install -r requirements.txt
+streamlit run app/streamlit_app.py
+```
+
+## Si un import manque au déploiement
+1. Ajouter explicitement le package manquant dans `requirements.txt`.
+2. Commit + push sur la branche de la PR existante.
+3. Redéployer l'app Streamlit.
 
 ## Vues (logique de lecture)
-1. **Accueil**: message directeur, constats, décisions immédiates.
-2. **Cockpit COMEX**: KPIs clés, tension stratégique, arbitrages à court terme.
-3. **Maturité**: lecture par dimension + priorités d'action.
-4. **Irritants → cas d’usage**: conversion terrain vers portefeuille.
-5. **Portefeuille 2026**: priorisation actionnable.
-6. **Gouvernance et garde-fous**: cadre autorisé/toléré/interdit/sous validation.
-7. **Enablement / formation**: parcours par population.
-8. **Réseau Early Adopters**: activation des relais.
-9. **Roadmap 12 mois**: séquencement exécution + KPI.
-10. **Artefacts**: inventaire livrables.
+1. **Accueil**
+2. **Cockpit COMEX**
+3. **Maturité**
+4. **Irritants → cas d’usage**
+5. **Portefeuille 2026**
+6. **Gouvernance et garde-fous**
+7. **Enablement / formation**
+8. **Réseau Early Adopters**
+9. **Roadmap 12 mois**
+10. **Artefacts**
 
 ## Design system
 - Theme Streamlit via `.streamlit/config.toml`.
-- CSS custom léger dans `app/streamlit_app.py` (cartes KPI, callouts, badges, hiérarchie).
+- CSS custom léger dans `app/streamlit_app.py` (cartes KPI, encarts, badges).
 - Palette documentée dans `outputs/brand_ui_rationale.md`.
 
-## Sources de vérité utilisées
+## Sources de vérité
 - `outputs/executive_summary.md`
 - `outputs/one_pager_comex.md`
 - `outputs/board_deck_outline.md`
@@ -29,15 +43,6 @@ Cette app n'est pas un explorateur analytique lourd. Elle sert au **pilotage de 
 - `outputs/variable_dictionary.csv`
 - `outputs/charts/*`
 
-## Dépendances
-Le déploiement Streamlit Cloud s'appuie sur `requirements.txt` racine.
-
-## Lancement local
-```bash
-pip install -r requirements.txt
-streamlit run app/streamlit_app.py
-```
-
 ## Gouvernance de contenu
-- Les chiffres affichés viennent des outputs existants ou de calculs traçables sur `cleaned_data.csv`.
-- Toute proposition non directement issue des données est marquée comme **recommandation**.
+- Les KPI affichés proviennent des outputs existants ou de calculs traçables.
+- Toute proposition non directement issue des données est marquée **recommandation**.
