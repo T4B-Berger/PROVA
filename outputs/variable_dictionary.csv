@@ -1,2 +1,35 @@
 nom_colonne,libelle_estime,type_question,type_analytique,remarques_ambiguite,mode_analyse_recommande
-information non disponible dans les données fournies,information non disponible dans les données fournies,information non disponible dans les données fournies,information non disponible dans les données fournies,Aucun fichier `.xlsx` ou `.csv` de réponses n'a été trouvé au niveau du dépôt.,fournir un export de réponses
+id,ID,métadonnée de réponse,technique,"classification automatique, à valider métier",thématisation
+heure_de_début,Heure de début,question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+heure_de_fin,Heure de fin,métadonnée de réponse,technique,"classification automatique, à valider métier",thématisation
+adresse_de_messagerie,Adresse de messagerie,métadonnée de réponse,technique,"classification automatique, à valider métier",thématisation
+nom,Nom,métadonnée de réponse,technique,"classification automatique, à valider métier",thématisation
+heure_de_la_dernière_modification,Heure de la dernière modification,échelle ordinale / Likert,ordinal,"classification automatique, à valider métier",distribution
+what_is_your_primary_role,What is your primary role ?,question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+how_would_you_describe_your_level_of_expertise_in_ai,How would you describe your level of expertise in AI?,question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+1_mostly_concerned_5_mostly_excited,1 = Mostly concerned / 5 = Mostly excited,échelle ordinale / Likert,ordinal,"classification automatique, à valider métier",distribution
+have_you_used_ai_for_work_in_the_last_30_days,"Have you used AI for work in the last 30 days?
+",question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+how_often,How often?,question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+what_do_you_use_ai_for_at_work,What do you use AI for at work?,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional,"If you selected ‘Other’ above, please describe it (optional).",texte libre,texte,"classification automatique, à valider métier",thématisation
+which_ai_tool_s_do_you_use_for_work,Which AI tool(s) do you use for work?,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_or_internal_tool_can_you_please_specify,"If you selected other or internal tool, can you please specify ?",question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+what_type_of_content_do_you_use_ai_on,What type of content do you use AI on?,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+benefits_you_ve_experienced_at_work,Benefits you’ve experienced at work,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+barriers_reasons_for_not_using_ai_at_work,Barriers / reasons for not using AI at work,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional_2,"If you selected ‘Other’ above, please describe it (optional).2",question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+have_you_had_any_issues_or_bad_surprises_using_ai_at_work,Have you had any issues or “bad surprises” using AI at work?,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional_3,"If you selected ‘Other’ above, please describe it (optional).3",texte libre,texte,"classification automatique, à valider métier",thématisation
+when_you_use_ai_do_you_typically,"When you use AI, do you typically…",question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional_4,"If you selected ‘Other’ above, please describe it (optional).4",texte libre,texte,"classification automatique, à valider métier",thématisation
+what_would_you_like_to_learn_first,What would you like to learn first?,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional_5,"If you selected ‘Other’ above, please describe it (optional).5",texte libre,texte,"classification automatique, à valider métier",thématisation
+preferred_learning_format,Preferred learning format,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional_6,"If you selected ‘Other’ above, please describe it (optional).6",texte libre,texte,"classification automatique, à valider métier",thématisation
+do_you_use_ai_in_your_personal_life,Do you use AI in your personal life?,question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+what_do_you_use_it_for,What do you use it for?,question à choix multiple,catégorielle multi,"classification automatique, à valider métier",distribution
+if_you_selected_other_above_please_describe_it_optional_7,"If you selected ‘Other’ above, please describe it (optional).7",texte libre,texte,"classification automatique, à valider métier",thématisation
+would_you_like_to_be_part_of_the_early_adopters_team_and_be_involved_in_experimentations_for_instance_or_be_a_key_contact_for_your_team_locally,"Would you like to be part of the Early Adopters team (and be involved in experimentations for instance, or be a key contact for your team locally)",question fermée à choix unique,catégorielle,"classification automatique, à valider métier",distribution
+what_s_the_most_annoying_part_of_your_job_that_ai_could_help_with,What’s the most annoying part of your job that AI could help with?,texte libre,texte,"classification automatique, à valider métier",thématisation
+if_we_had_to_prioritize_3_ai_use_cases_for_2026_what_would_you_propose_1_to_3_ideas,"If we had to prioritize 3 AI use cases for 2026, what would you propose? (1 to 3 ideas)",texte libre,texte,"classification automatique, à valider métier",thématisation
