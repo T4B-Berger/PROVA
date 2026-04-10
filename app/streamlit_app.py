@@ -127,21 +127,18 @@ exp_s = DF[COLS["exp"]].dropna().astype(str)
 beg_n = int((exp_s == "Beginner").sum())
 beg_pct = round((beg_n / len(exp_s) * 100), 1) if len(exp_s) else 0.0
 
-# Global toggle
-desc_only = st.sidebar.toggle("Description seule", value=False)
-st.sidebar.caption("Oui = vues strictement factuelles")
-
-factual_views = [
+# Navigation lists (single source of truth)
+FACTUAL_PAGES = [
     "Accueil",
     "Cockpit COMEX factuel",
     "Maturité",
     "Segmentations",
     "Réponses individuelles",
     "Verbatims intelligents",
-    "Artefacts descriptifs",
+    "Artefacts descriptifs / sources",
 ]
 
-reco_views = [
+PRESCRIPTIVE_PAGES = [
     "Use case lab",
     "Gouvernance",
     "Enablement",
@@ -149,8 +146,12 @@ reco_views = [
     "Recommandations / priorisation",
 ]
 
-menu_options = factual_views if desc_only else factual_views + reco_views
-view = st.sidebar.radio("Vues", menu_options)
+# Global control (must be first element in sidebar)
+desc_mode = st.sidebar.radio("Description seule", ["Oui", "Non"], index=0)
+desc_only = desc_mode == "Oui"
+
+menu_options = FACTUAL_PAGES if desc_only else FACTUAL_PAGES + PRESCRIPTIVE_PAGES
+view = st.sidebar.radio("Navigation", menu_options)
 
 if view == "Accueil":
     st.title("PROVA — Lecture factuelle des réponses IA")
@@ -193,17 +194,18 @@ elif view == "Cockpit COMEX factuel":
 
 elif view == "Maturité":
     st.title("Maturité")
-    maturity_df = pd.DataFrame([
-        ["Appétence", "Élevée", "Adoption pro/perso visible", "—" if desc_only else "Renforcer par cas d'usage"],
-        ["Maturité d’usage", "Intermédiaire faible", "Débutants majoritaires", "—" if desc_only else "Former par fonction"],
-        ["Valeur business", "Prometteuse", "Usages productivité dominants", "—" if desc_only else "Industrialiser 3 cas"],
-        ["Gouvernance", "À structurer", "Risque cité", "—" if desc_only else "Cadre autorisé/toléré/interdit"],
-        ["Industrialisation", "Démarrage", "Pratiques hétérogènes", "—" if desc_only else "Standardiser prompts/KPI"],
-        ["Diffusion", "Possible", "Vivier early adopters", "—" if desc_only else "Activer réseau relais"],
-    ], columns=["Dimension", "État actuel", "Lecture", "Priorité d’action"])
-    st.dataframe(maturity_df, use_container_width=True, hide_index=True)
+    rows = [
+        ["Appétence", "Élevée", "Adoption pro/perso visible", "Renforcer par cas d'usage"],
+        ["Maturité d’usage", "Intermédiaire faible", "Débutants majoritaires", "Former par fonction"],
+        ["Valeur business", "Prometteuse", "Usages productivité dominants", "Industrialiser 3 cas"],
+        ["Gouvernance", "À structurer", "Risque cité", "Cadre autorisé/toléré/interdit"],
+        ["Industrialisation", "Démarrage", "Pratiques hétérogènes", "Standardiser prompts/KPI"],
+        ["Diffusion", "Possible", "Vivier early adopters", "Activer réseau relais"],
+    ]
+    maturity_df = pd.DataFrame(rows, columns=["Dimension", "État actuel", "Lecture", "Priorité d’action"])
     if desc_only:
-        st.caption("Mode factuel: colonne priorité neutralisée.")
+        maturity_df = maturity_df.drop(columns=["Priorité d’action"])
+    st.dataframe(maturity_df, use_container_width=True, hide_index=True)
 
 elif view == "Segmentations":
     st.title("Segmentations")
@@ -313,7 +315,7 @@ elif view == "Verbatims intelligents":
     if not desc_only:
         st.markdown("<span class='badge-rec'>Recommandation</span> Utiliser les tags dominants pour alimenter le backlog cas d’usage et le plan de formation.", unsafe_allow_html=True)
 
-elif view == "Artefacts descriptifs":
+elif view == "Artefacts descriptifs / sources":
     st.title("Artefacts descriptifs / sources")
     artefacts = [
         ("outputs/executive_summary.md", "Synthèse dirigeant"),
