@@ -92,6 +92,12 @@ QUESTION_LABELS = {
     "learn": "Apprentissages prioritaires",
 }
 
+BINARY_LABELS = {
+    "use_work": {"Yes": "Utilise l’intelligence artificielle au travail (30 derniers jours)", "No": "N’utilise pas l’intelligence artificielle au travail (30 derniers jours)"},
+    "personal": {"Yes": "Utilise l’intelligence artificielle dans la vie personnelle", "No": "N’utilise pas l’intelligence artificielle dans la vie personnelle"},
+    "early": {"Yes": "Présence d’early adopters dans l’équipe", "No": "Pas d’early adopters identifiés dans l’équipe"},
+}
+
 
 def ordered_expertise(values: list[str]) -> list[str]:
     uniq = [v for v in values if isinstance(v, str)]
@@ -104,6 +110,18 @@ def sort_index_expertise(df: pd.DataFrame) -> pd.DataFrame:
     present = [v for v in EXPERTISE_ORDER if v in df.index]
     others = [v for v in df.index if v not in EXPERTISE_ORDER]
     return df.reindex(present + others)
+
+
+def relabel_binary_axis(df: pd.DataFrame, axis: str, key: str) -> pd.DataFrame:
+    labels = BINARY_LABELS.get(key)
+    if not labels:
+        return df
+    out = df.copy()
+    if axis == "index":
+        out.index = [labels.get(str(v), v) for v in out.index]
+    elif axis == "columns":
+        out.columns = [labels.get(str(v), v) for v in out.columns]
+    return out
 
 
 TAXONOMY = {
@@ -290,16 +308,51 @@ elif view == "Maturité":
 elif view == "Segmentations":
     st.title("Segmentations")
     tests = [
-        (COLS["exp"], COLS["use_work"], "Niveau d’expertise et usage au travail"),
-        (COLS["personal"], COLS["use_work"], "Usage personnel et usage au travail"),
-        (COLS["role"], COLS["use_work"], "Fonction et usage au travail"),
+        {
+            "row_col": COLS["exp"],
+            "col_col": COLS["use_work"],
+            "row_key": "exp",
+            "col_key": "use_work",
+            "title": "Niveau d’expertise et usage de l’intelligence artificielle au travail",
+            "help": "Lignes : niveau d’expertise déclaré. Colonnes : usage au travail sur les 30 derniers jours.",
+        },
+        {
+            "row_col": COLS["personal"],
+            "col_col": COLS["use_work"],
+            "row_key": "personal",
+            "col_key": "use_work",
+            "title": "Usage personnel et usage de l’intelligence artificielle au travail",
+            "help": "Lignes : usage dans la vie personnelle. Colonnes : usage au travail sur les 30 derniers jours.",
+        },
+        {
+            "row_col": COLS["role"],
+            "col_col": COLS["use_work"],
+            "row_key": "role",
+            "col_key": "use_work",
+            "title": "Fonction principale et usage de l’intelligence artificielle au travail",
+            "help": "Lignes : fonction principale. Colonnes : usage au travail sur les 30 derniers jours.",
+        },
     ]
-    for a, b, label in tests:
-        st.subheader(label)
+    for item in tests:
+        a = item["row_col"]
+        b = item["col_col"]
+        st.subheader(item["title"])
+        st.caption(item["help"])
         c2, p, dof, ct = chi2_table(DF, a, b)
-        if a == COLS["exp"]:
+        if item["row_key"] == "exp":
             ct = sort_index_expertise(ct)
-        st.dataframe(ct, use_container_width=True)
+        ct = relabel_binary_axis(ct, "index", item["row_key"])
+        ct = relabel_binary_axis(ct, "columns", item["col_key"])
+
+        ct_display = ct.copy()
+        ct_display["Total ligne"] = ct_display.sum(axis=1)
+        total_row = pd.DataFrame([ct_display.sum(axis=0)], index=["Total colonne"])
+        ct_display = pd.concat([ct_display, total_row])
+        st.dataframe(ct_display, use_container_width=True)
+
+        pct = ct.div(ct.sum(axis=1), axis=0).fillna(0).mul(100).round(1)
+        st.caption("Pourcentages par ligne (%).")
+        st.dataframe(pct, use_container_width=True)
         if p is None:
             st.write("Variabilité insuffisante.")
         else:
@@ -309,7 +362,12 @@ elif view == "Segmentations":
 elif view == "Réponses individuelles":
     st.title("Réponses individuelles")
     role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", sorted(DF[COLS["role"]].dropna().astype(str).unique().tolist()))
-    use_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['use_work']}", sorted(DF[COLS["use_work"]].dropna().astype(str).unique().tolist()))
+    use_filter_display = st.multiselect(
+        f"Filtre — {QUESTION_LABELS['use_work']}",
+        [BINARY_LABELS["use_work"].get(v, v) for v in sorted(DF[COLS["use_work"]].dropna().astype(str).unique().tolist())],
+    )
+    use_reverse = {v: k for k, v in BINARY_LABELS["use_work"].items()}
+    use_filter = [use_reverse.get(v, v) for v in use_filter_display]
     exp_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['exp']}", ordered_expertise(DF[COLS["exp"]].dropna().astype(str).unique().tolist()))
     early_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['early']}", sorted(DF[COLS["early"]].dropna().astype(str).unique().tolist()))
     q = st.text_input("Recherche plein texte")
@@ -335,10 +393,11 @@ elif view == "Réponses individuelles":
     row = sub.iloc[int(idx)]
 
     maturity_badge = str(row.get(COLS["exp"], "n/a"))
+    work_usage_label = BINARY_LABELS["use_work"].get(str(row.get(COLS["use_work"], "n/a")), str(row.get(COLS["use_work"], "n/a")))
     st.markdown(f"<span class='badge-fact'>Profil: {maturity_badge}</span>", unsafe_allow_html=True)
 
     block = respondent_block(row, COLS)
-    block["Profil"] = f"{block['Profil']} | Usage pro: {row.get(COLS['use_work'], 'n/a')}"
+    block["Profil"] = f"{block['Profil']} | Usage professionnel: {work_usage_label}"
     block["Verbatims"] = anonymize_text(block["Verbatims"])
 
     for k, v in block.items():
