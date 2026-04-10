@@ -8,7 +8,7 @@
 - `main`
 
 ## C. dernier commit
-- `f5ab7f0` — *Fix latest commit reference in delivery status*
+- `git log -1 --oneline` au moment de la vérification de clôture
 
 ## D. push effectué ou non
 - `work`: **Non** (aucun remote configuré localement, aucun upstream)
