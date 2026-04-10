@@ -5,7 +5,7 @@
 
 ## État Git local
 - Working tree: propre
-- Dernier commit: `d297de5` (`Update PR blocking status after push retry`)
+- Dernier commit: `563e0bc` (`Add final GitHub publication status and PR-ready artifact`)
 
 ## Remote origin
 - `origin https://github.com/T4B-Berger/PROVA.git` (fetch/push)
@@ -15,8 +15,11 @@
   - Résultat: échec
   - Erreur: `fatal: could not read Username for 'https://github.com': No such device or address`
 - Tentative 2 (non interactive, token environnement): push via URL HTTPS authentifiée par token
-  - Résultat: succès
-  - Branche distante créée: `origin/feat/survey-streamlit-pr`
+  - Résultat: succès (création branche distante)
+- Tentative 3 après nouveaux commits: `git push origin feat/survey-streamlit-pr`
+  - Résultat: échec (même erreur d'authentification)
+- Tentative 4 (token): push via URL HTTPS authentifiée par token
+  - Résultat: succès (`d297de5..563e0bc`)
 
 ## Méthode PR tentée
 - Méthode A (gh): indisponible (`gh` absent)
@@ -32,6 +35,6 @@
 - `/bin/bash: line 1: gh: command not found`
 
 ## Statut final
-- Push: **réussi**
+- Push: **réussi** (via token environnement en mode non interactif)
 - Création PR draft: **réussie**
 - Publication: **opérationnelle**
