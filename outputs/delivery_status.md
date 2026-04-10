@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `dd95811` — Merge main into segmentation readability hotfix and resolve conflicts
+- `0763377` — Update delivery status for segmentation readability PR #6
 
 ## D. push effectué ou non
 - **Oui**
