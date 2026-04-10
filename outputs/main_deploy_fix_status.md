@@ -29,7 +29,7 @@
 - Branche locale: `main`.
 - Commits appliqués sur main:
   - `ddbfff8` (fix dépendances Streamlit Cloud)
-  - `2f4db4c` (ce rapport de statut)
+  - `0cc771a` (ce rapport de statut)
 - Push main: effectué.
 
 ## F. impact attendu sur le redéploiement Streamlit
