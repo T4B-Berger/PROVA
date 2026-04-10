@@ -207,7 +207,13 @@ view = st.sidebar.radio("Navigation", menu_options)
 
 if view == "Accueil":
     st.title("PROVA — Lecture factuelle des réponses IA")
-    st.markdown("<div class='section-box'><span class='badge-fact'>Fait observé</span> L'adoption IA est active et mesurable sur l'échantillon.</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='section-box'><span class='badge-fact'>Message directeur</span> "
+        "L’entreprise n’est plus au stade de l’exploration : l’usage est déjà large, la valeur est visible, "
+        "et le prochain enjeu est de cadrer le risque puis d’industrialiser quelques cas d’usage prioritaires."
+        "</div>",
+        unsafe_allow_html=True,
+    )
     a, b, c = st.columns(3)
     with a:
         card("Taille d'échantillon", str(len(DF)), "Réponses exploitables")
@@ -215,16 +221,19 @@ if view == "Accueil":
         card("Usage IA au travail", f"{use_pct}%", f"{use_y}/{use_n}")
     with c:
         card("Débutants IA", f"{beg_pct}%", f"{beg_n}/{len(exp_s)}")
-    st.subheader("5 constats clés")
+    st.subheader("Quatre messages de synthèse")
     st.markdown(
-        "- Adoption pro et perso observée\n"
-        "- Maturité hétérogène\n"
-        "- Usages majoritairement opérationnels\n"
-        "- Risques qualité/confidentialité mentionnés\n"
-        "- Vivier early adopters identifiable"
+        "1. Le sujet n’est plus exploratoire : l’usage est déjà installé.\n"
+        "2. La valeur est visible : gains de temps, qualité et créativité.\n"
+        "3. Le frein principal est le risque : confidentialité, conformité, fiabilité.\n"
+        "4. Le prochain mouvement est opérationnel : cadre simple, pilotes ciblés, diffusion."
     )
     if not desc_only:
-        st.markdown("<span class='badge-rec'>Recommandation</span> Prioriser 3 chantiers d'exécution immédiatement.", unsafe_allow_html=True)
+        st.markdown(
+            "<span class='badge-rec'>Décision attendue</span> Passer d’usages individuels non gouvernés "
+            "à une première vague pilotée, bornée et mesurable.",
+            unsafe_allow_html=True,
+        )
 
 elif view == "Cockpit COMEX factuel":
     st.title("Cockpit COMEX factuel")
@@ -237,7 +246,7 @@ elif view == "Cockpit COMEX factuel":
     with c: card("Débutants", f"{beg_pct}%")
     with d: card("Early adopters (Yes)", f"{ep}%", f"{ey}/{len(e)}")
 
-    st.subheader("Synthèse compacte")
+    st.subheader("Synthèse compacte pour comité de direction")
     c1, c2 = st.columns([1, 1])
     with c1:
         p = CHARTS / "usage_ai_travail_distribution.png"
@@ -251,6 +260,17 @@ elif view == "Cockpit COMEX factuel":
         st.dataframe(exp_table, hide_index=True, use_container_width=True)
 
     st.markdown("<span class='badge-fact'>Fait observé</span> Vue direction générale : indicateurs clés et visuels compacts.", unsafe_allow_html=True)
+    st.subheader("Lecture COMEX en quatre messages")
+    summary = pd.DataFrame(
+        [
+            ["Le sujet n’est plus exploratoire", "57/70 utilisent déjà l’intelligence artificielle au travail"],
+            ["La valeur est déjà visible", "Les bénéfices de productivité et de qualité sont déjà observables"],
+            ["Le frein principal est le risque", "La maîtrise des données et la fiabilité doivent être cadrées"],
+            ["Le prochain mouvement est organisationnel", "Cadre, pilotes, diffusion et mesure légère des gains"],
+        ],
+        columns=["Message de direction", "Élément factuel"],
+    )
+    st.dataframe(summary, hide_index=True, use_container_width=True)
 
 elif view == "Maturité":
     st.title("Maturité")
@@ -259,7 +279,7 @@ elif view == "Maturité":
         ["Maturité d’usage", "Intermédiaire faible", "Débutants majoritaires", "Former par fonction"],
         ["Valeur business", "Prometteuse", "Usages productivité dominants", "Industrialiser 3 cas"],
         ["Gouvernance", "À structurer", "Risque cité", "Cadre autorisé/toléré/interdit"],
-        ["Industrialisation", "Démarrage", "Pratiques hétérogènes", "Standardiser prompts/KPI"],
+        ["Industrialisation", "Démarrage", "Pratiques hétérogènes", "Standardiser les pratiques et les indicateurs clés"],
         ["Diffusion", "Possible", "Vivier early adopters", "Activer réseau relais"],
     ]
     maturity_df = pd.DataFrame(rows, columns=["Dimension", "État actuel", "Lecture", "Priorité d’action"])
@@ -442,5 +462,10 @@ elif view == "Roadmap / Action tracker":
 
 else:
     st.title("Recommandations / priorisation")
-    st.markdown("<span class='badge-rec'>Recommandation</span> Priorisation pilotage (non factuelle stricte).", unsafe_allow_html=True)
-    st.write("1. Cadre d'usage IA\n2. Formation ciblée\n3. 3 pilotes KPIisés\n4. Cockpit trimestriel\n5. Réseau de relais")
+    st.markdown("<span class='badge-rec'>Décisions COMEX attendues</span> Quatre arbitrages suffisent pour sortir du statu quo.", unsafe_allow_html=True)
+    st.write(
+        "1. Valider un cadre d’usage de l’intelligence artificielle simple et clair.\n"
+        "2. Nommer un sponsor exécutif global et un responsable métier par pilote.\n"
+        "3. Lancer deux gains rapides transverses et un pilote métier différenciant.\n"
+        "4. Activer l’adoption : formation par fonction, réseau de relais, mesure légère des gains."
+    )
