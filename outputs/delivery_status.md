@@ -8,7 +8,7 @@
 - `main`
 
 ## C. dernier commit
-- `1ef2174` — *Update delivery status with verified PR and validation details*
+- `f5ab7f0` — *Fix latest commit reference in delivery status*
 
 ## D. push effectué ou non
 - `work`: **Non** (aucun remote configuré localement, aucun upstream)
