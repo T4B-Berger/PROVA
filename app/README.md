@@ -40,3 +40,22 @@ La page `Verbatims intelligents` propose :
 pip install -r requirements.txt
 streamlit run app/streamlit_app.py
 ```
+
+## 7) Intégration éditoriale du deck COMEX
+L’application intègre une sélection raisonnée du deck COMEX (et non un copier-coller).
+
+### Ce qui a été repris
+- Message directeur d’ouverture (passage de l’exploration à l’exécution pilotée).
+- Storyline en quatre messages pour structurer la lecture de direction.
+- Bloc décisionnel en quatre arbitrages sur la vue de priorisation.
+- Renforcement de la hiérarchie de lecture sur le cockpit COMEX.
+
+### Ce qui n’a pas été repris
+- Annexes trop détaillées slide par slide.
+- Redondances chiffrées déjà visibles dans les pages factuelles.
+- Éléments “slideware” qui alourdissent l’interface sans gain décisionnel.
+
+### Pourquoi
+- Conserver une interface lisible, orientée décision.
+- Améliorer la narration sans surcharge ni duplication.
+- Maintenir la séparation stricte entre constat factuel et contenus prescriptifs.
