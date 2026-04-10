@@ -1,13 +1,13 @@
 # Delivery status
 
 ## A. branche source
-- `feat/deck-comex-editorial-integration`
+- `hotfix/segmentation-table-readability`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `d2c323b` — Update delivery status for deck integration PR #5
+- `dd95811` — Merge main into segmentation readability hotfix and resolve conflicts
 
 ## D. push effectué ou non
 - **Oui**
@@ -16,7 +16,7 @@
 - **Oui**
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/5
+- https://github.com/T4B-Berger/PROVA/pull/6
 
 ## G. statut de PR
 - `open` (ready for review, non draft)
@@ -28,8 +28,8 @@
 - **Oui** (PR ouverte, sans conflit)
 
 ## J. impact attendu en prod
-- Non visible tant que la PR #5 n'est pas merge dans `main`.
+- Non visible tant que la PR #6 n'est pas merge dans `main`.
 
 ## K. action restante minimale
-1. Squash merge PR #5 vers `main`.
+1. Squash merge PR #6 vers `main`.
 2. Vérifier le redéploiement Streamlit sur `main`.
