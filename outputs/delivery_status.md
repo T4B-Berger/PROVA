@@ -1,13 +1,13 @@
 # Delivery status
 
 ## A. branche source
-- `hotfix/exec-readiness`
+- `feat/deck-comex-editorial-integration`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `7b647e8` — Update delivery status for PR #4 publication
+- `d930d71` — Merge main into deck integration branch and resolve conflicts
 
 ## D. push effectué ou non
 - **Oui**
@@ -16,7 +16,7 @@
 - **Oui**
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/4
+- https://github.com/T4B-Berger/PROVA/pull/5
 
 ## G. statut de PR
 - `open` (ready for review, non draft)
@@ -28,8 +28,8 @@
 - **Oui** (PR ouverte, sans conflit)
 
 ## J. impact attendu en prod
-- Non visible tant que la PR #4 n'est pas merge dans `main`.
+- Non visible tant que la PR #5 n'est pas merge dans `main`.
 
 ## K. action restante minimale
-1. Squash merge PR #4 vers `main`.
+1. Squash merge PR #5 vers `main`.
 2. Vérifier le redéploiement Streamlit sur `main`.
