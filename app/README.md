@@ -1,51 +1,41 @@
-# App Streamlit – PROVA IA Transformation Cockpit (Phase 3)
+# Application Streamlit — PROVA (hotfix comité de direction)
 
-## Finalité
-App de pilotage avec **double mode de lecture**:
-- **Description seule = Oui**: vues strictement factuelles
-- **Description seule = Non**: vues factuelles + vues de recommandation
+## 1) Protection du mode prescriptif
+Le contrôle global de la sidebar est `Description seule`.
+- `Oui` : mode strictement descriptif.
+- `Non` : accès au mode prescriptif uniquement après validation du mot de passe de session.
 
-## Toggle global
-Dans le menu latéral: `Description seule`.
+### Protection mise en place
+- Mot de passe requis pour activer le mode `Non` : `iqo`.
+- Saisie masquée (`type="password"`).
+- État mémorisé par session (`st.session_state`).
+- Cette protection est **légère** (contrôle d’accès applicatif), et **ne remplace pas** un dispositif de sécurité forte.
 
-### Mode Oui (factuel uniquement)
-- Accueil
-- Cockpit COMEX factuel
-- Maturité
-- Segmentations
-- Réponses individuelles
-- Verbatims intelligents
-- Artefacts descriptifs
+## 2) Ordre métier
+L’ordre métier de l’expertise en intelligence artificielle est appliqué dans les vues concernées :
+1. `Advanced / Expert`
+2. `Intermediate`
+3. `Beginner`
+4. `Interested, but not using it yet`
 
-### Mode Non (factuel + pilotage)
-- toutes les vues ci-dessus
-- + Use case lab
-- + Gouvernance
-- + Enablement
-- + Roadmap / Action tracker
-- + Recommandations / priorisation
+Aucun tri alphabétique n’est utilisé pour cette variable dans les filtres et tableaux concernés.
 
-## Logique NLU retenue
-NLU léger, explicable, non opaque:
-- taxonomie mots-clés (irritant, opportunite, risque, formation, cas_usage)
-- tagging multi-label
-- fréquence des tags
-- score simple d'actionnabilité (nombre de tags)
+## 3) Libellés lisibles
+Un mapping centralisé transforme les champs techniques en libellés lisibles pour l’interface (filtres, vues individuelles, verbatims, segmentations).
+Objectif : ne pas exposer de noms de colonnes techniques dans l’interface.
 
-## Limites méthodologiques
-- pas de sentiment analysis opaque
-- pas d'inférence causale
-- les éléments prescriptifs sont explicitement marqués recommandation/proposition
+## 4) Verbatims enrichis
+La page `Verbatims intelligents` propose :
+- regroupement thématique avec volumes,
+- filtres par thème et fonction,
+- vue dédiée `Verbatims par thème` (liste dépliable),
+- anonymisation systématique des extraits.
 
-## Différences de nature des contenus
-- **Fait observé**: chiffre/constat traçable aux données
-- **Regroupement analytique**: tag/thème explicable
-- **Recommandation**: proposition d'action (uniquement en mode Non)
+## 5) Navigation
+- `Description seule = Oui` : pages factuelles uniquement.
+- `Description seule = Non` : pages factuelles + pages prescriptives (si mot de passe validé).
 
-## Dépendances de déploiement
-Le déploiement Streamlit Cloud utilise `requirements.txt` racine.
-
-## Lancement local
+## 6) Lancement local
 ```bash
 pip install -r requirements.txt
 streamlit run app/streamlit_app.py

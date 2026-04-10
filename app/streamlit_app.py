@@ -70,6 +70,42 @@ def chi2_table(df: pd.DataFrame, a: str, b: str):
     return c2, p, dof, ct
 
 
+EXPERTISE_ORDER = [
+    "Advanced / Expert",
+    "Intermediate",
+    "Beginner",
+    "Interested, but not using it yet",
+]
+
+QUESTION_LABELS = {
+    "role": "Fonction principale",
+    "exp": "Niveau d’expertise en intelligence artificielle",
+    "use_work": "Utilisation de l’intelligence artificielle au travail (30 derniers jours)",
+    "freq": "Fréquence d’utilisation de l’intelligence artificielle",
+    "work_multi": "Usages de l’intelligence artificielle au travail",
+    "personal": "Utilisation de l’intelligence artificielle dans la vie personnelle",
+    "early": "Présence d’early adopters dans l’équipe",
+    "annoy": "Irritants principaux dans le travail",
+    "usecase": "Cas d’usage prioritaires pour 2026",
+    "benefits": "Bénéfices observés au travail",
+    "issues": "Incidents ou risques rencontrés avec l’intelligence artificielle",
+    "learn": "Apprentissages prioritaires",
+}
+
+
+def ordered_expertise(values: list[str]) -> list[str]:
+    uniq = [v for v in values if isinstance(v, str)]
+    preferred = [v for v in EXPERTISE_ORDER if v in uniq]
+    other = sorted([v for v in uniq if v not in EXPERTISE_ORDER])
+    return preferred + other
+
+
+def sort_index_expertise(df: pd.DataFrame) -> pd.DataFrame:
+    present = [v for v in EXPERTISE_ORDER if v in df.index]
+    others = [v for v in df.index if v not in EXPERTISE_ORDER]
+    return df.reindex(present + others)
+
+
 TAXONOMY = {
     "irritant": ["admin", "manual", "paperwork", "routine", "time-consuming", "annoy"],
     "opportunite": ["improve", "faster", "save", "efficiency", "value", "better"],
@@ -148,7 +184,23 @@ PRESCRIPTIVE_PAGES = [
 
 # Global control (must be first element in sidebar)
 desc_mode = st.sidebar.radio("Description seule", ["Oui", "Non"], index=0)
-desc_only = desc_mode == "Oui"
+if "prescriptive_unlocked" not in st.session_state:
+    st.session_state["prescriptive_unlocked"] = False
+
+if desc_mode == "Non" and not st.session_state["prescriptive_unlocked"]:
+    st.sidebar.warning("Accès au mode prescriptif protégé.")
+    pwd = st.sidebar.text_input("Mot de passe", type="password")
+    if st.sidebar.button("Valider l’accès", use_container_width=True):
+        if pwd == "iqo":
+            st.session_state["prescriptive_unlocked"] = True
+            st.sidebar.success("Accès prescriptif autorisé pour cette session.")
+        else:
+            st.sidebar.error("Mot de passe incorrect.")
+
+desc_only = not (desc_mode == "Non" and st.session_state["prescriptive_unlocked"])
+if desc_mode == "Non" and desc_only:
+    st.sidebar.info("Restez en mode descriptif tant que le mot de passe n'est pas validé.")
+st.sidebar.caption("Protection légère d’accès au mode prescriptif (non destinée à la sécurité forte).")
 
 menu_options = FACTUAL_PAGES if desc_only else FACTUAL_PAGES + PRESCRIPTIVE_PAGES
 view = st.sidebar.radio("Navigation", menu_options)
@@ -185,12 +237,20 @@ elif view == "Cockpit COMEX factuel":
     with c: card("Débutants", f"{beg_pct}%")
     with d: card("Early adopters (Yes)", f"{ep}%", f"{ey}/{len(e)}")
 
-    for name in ["usage_ai_travail_distribution.png", "repartition_roles.png"]:
-        p = CHARTS / name
+    st.subheader("Synthèse compacte")
+    c1, c2 = st.columns([1, 1])
+    with c1:
+        p = CHARTS / "usage_ai_travail_distribution.png"
         if p.exists():
-            st.image(str(p), caption=name)
+            st.image(str(p), caption="Répartition de l’usage au travail", width=360)
+    with c2:
+        exp_counts = DF[COLS["exp"]].value_counts(dropna=True)
+        exp_table = pd.DataFrame({"Niveau d’expertise": exp_counts.index, "Volume": exp_counts.values})
+        exp_table["Niveau d’expertise"] = pd.Categorical(exp_table["Niveau d’expertise"], categories=EXPERTISE_ORDER, ordered=True)
+        exp_table = exp_table.sort_values("Niveau d’expertise")
+        st.dataframe(exp_table, hide_index=True, use_container_width=True)
 
-    st.markdown("<span class='badge-fact'>Fait observé</span> Tableau de bord strictement descriptif.", unsafe_allow_html=True)
+    st.markdown("<span class='badge-fact'>Fait observé</span> Vue direction générale : indicateurs clés et visuels compacts.", unsafe_allow_html=True)
 
 elif view == "Maturité":
     st.title("Maturité")
@@ -210,13 +270,15 @@ elif view == "Maturité":
 elif view == "Segmentations":
     st.title("Segmentations")
     tests = [
-        (COLS["exp"], COLS["use_work"], "Expertise vs usage pro"),
-        (COLS["personal"], COLS["use_work"], "Usage perso vs usage pro"),
-        (COLS["role"], COLS["use_work"], "Rôle vs usage pro"),
+        (COLS["exp"], COLS["use_work"], "Niveau d’expertise et usage au travail"),
+        (COLS["personal"], COLS["use_work"], "Usage personnel et usage au travail"),
+        (COLS["role"], COLS["use_work"], "Fonction et usage au travail"),
     ]
     for a, b, label in tests:
         st.subheader(label)
         c2, p, dof, ct = chi2_table(DF, a, b)
+        if a == COLS["exp"]:
+            ct = sort_index_expertise(ct)
         st.dataframe(ct, use_container_width=True)
         if p is None:
             st.write("Variabilité insuffisante.")
@@ -226,10 +288,10 @@ elif view == "Segmentations":
 
 elif view == "Réponses individuelles":
     st.title("Réponses individuelles")
-    role_filter = st.multiselect("Filtre rôle", sorted(DF[COLS["role"]].dropna().astype(str).unique().tolist()))
-    use_filter = st.multiselect("Filtre usage pro", sorted(DF[COLS["use_work"]].dropna().astype(str).unique().tolist()))
-    exp_filter = st.multiselect("Filtre maturité", sorted(DF[COLS["exp"]].dropna().astype(str).unique().tolist()))
-    early_filter = st.multiselect("Filtre early adopters", sorted(DF[COLS["early"]].dropna().astype(str).unique().tolist()))
+    role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", sorted(DF[COLS["role"]].dropna().astype(str).unique().tolist()))
+    use_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['use_work']}", sorted(DF[COLS["use_work"]].dropna().astype(str).unique().tolist()))
+    exp_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['exp']}", ordered_expertise(DF[COLS["exp"]].dropna().astype(str).unique().tolist()))
+    early_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['early']}", sorted(DF[COLS["early"]].dropna().astype(str).unique().tolist()))
     q = st.text_input("Recherche plein texte")
 
     sub = DF.copy()
@@ -249,7 +311,7 @@ elif view == "Réponses individuelles":
     if len(sub) == 0:
         st.stop()
 
-    idx = st.number_input("Naviguer réponse (index filtré)", min_value=0, max_value=len(sub)-1, value=0, step=1)
+    idx = st.number_input("Naviguer dans les réponses filtrées", min_value=0, max_value=len(sub)-1, value=0, step=1)
     row = sub.iloc[int(idx)]
 
     maturity_badge = str(row.get(COLS["exp"], "n/a"))
@@ -275,10 +337,11 @@ elif view == "Verbatims intelligents":
             txt = str(r.get(source, "")).strip()
             if txt and txt.lower() != "nan":
                 tags = tag_text(txt)
+                source_label = QUESTION_LABELS["annoy"] if source == COLS["annoy"] else QUESTION_LABELS["usecase"]
                 texts.append({
                     "role": str(r.get(COLS["role"], "n/a")),
                     "maturite": str(r.get(COLS["exp"], "n/a")),
-                    "source": source,
+                    "source": source_label,
                     "verbatim": anonymize_text(txt),
                     "tags": tags,
                     "actionnabilite": len(tags),
@@ -294,7 +357,7 @@ elif view == "Verbatims intelligents":
     tag_freq = ex["tags"].value_counts().rename_axis("tag").reset_index(name="frequence")
 
     tag_filter = st.multiselect("Filtre thème/tag", sorted(tag_freq["tag"].unique().tolist()))
-    role_filter = st.multiselect("Filtre rôle", sorted(vdf["role"].unique().tolist()))
+    role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", sorted(vdf["role"].unique().tolist()))
     q = st.text_input("Recherche verbatim")
 
     vf = vdf.copy()
@@ -305,15 +368,25 @@ elif view == "Verbatims intelligents":
     if q:
         vf = vf[vf["verbatim"].str.contains(q, case=False, na=False)]
 
-    st.subheader("Regroupement thématique (fréquences)")
+    st.subheader("Regroupement thématique")
     st.dataframe(tag_freq, use_container_width=True, hide_index=True)
 
     show_cols = ["role", "maturite", "source", "tags", "actionnabilite", "verbatim"]
     st.subheader("Verbatims anonymisés")
     st.dataframe(vf[show_cols].head(120), use_container_width=True, hide_index=True)
 
+    st.subheader("Verbatims par thème")
+    themes = sorted(tag_freq["tag"].tolist())
+    selected_theme = st.selectbox("Thème à explorer", themes)
+    themed = vf[vf["tags"].apply(lambda arr: selected_theme in arr)]
+    st.write(f"Volume pour le thème « {selected_theme} » : {len(themed)}")
+    for i, (_, rec) in enumerate(themed.head(30).iterrows(), start=1):
+        with st.expander(f"Verbatim {i} — {rec['role']} — {rec['maturite']}"):
+            st.write(rec["verbatim"])
+            st.caption("Texte anonymisé et tronqué pour confidentialité.")
+
     if not desc_only:
-        st.markdown("<span class='badge-rec'>Recommandation</span> Utiliser les tags dominants pour alimenter le backlog cas d’usage et le plan de formation.", unsafe_allow_html=True)
+        st.markdown("<span class='badge-rec'>Lecture managériale</span> Les thèmes dominants peuvent guider les priorités d’accompagnement.", unsafe_allow_html=True)
 
 elif view == "Artefacts descriptifs / sources":
     st.title("Artefacts descriptifs / sources")
@@ -329,7 +402,7 @@ elif view == "Artefacts descriptifs / sources":
     st.dataframe(adf, use_container_width=True, hide_index=True)
 
 elif view == "Use case lab":
-    st.title("Use case lab")
+    st.title("Laboratoire des cas d’usage")
     st.markdown("<span class='badge-rec'>Proposition</span> Vue prescriptive activée car Description seule = Non.", unsafe_allow_html=True)
     st.dataframe(pd.read_markdown if False else pd.DataFrame([
         ["Automatisation rédaction & synthèse", "Irritants de charge rédactionnelle", "Gain de temps", "Moyenne", "GED/bureautique", "Direction métiers", "0–6 mois", "Temps gagné"],
@@ -348,23 +421,23 @@ elif view == "Gouvernance":
     st.dataframe(gdf, use_container_width=True, hide_index=True)
 
 elif view == "Enablement":
-    st.title("Enablement")
+    st.title("Développement des compétences")
     st.markdown("<span class='badge-rec'>Proposition</span> Parcours de déploiement formation.", unsafe_allow_html=True)
     edf = pd.DataFrame([
         ["Débutants", "Prompting + vérification", "Atelier 1h", "RH + managers"],
         ["Intermédiaires", "Cas métier", "Coaching", "Managers fonctionnels"],
         ["Relais", "Industrialisation", "Bootcamp", "PMO transformation"],
-    ], columns=["Population", "Besoins", "Format", "Owner suggéré"])
+    ], columns=["Population", "Besoins", "Format", "Responsable suggéré"])
     st.dataframe(edf, use_container_width=True, hide_index=True)
 
 elif view == "Roadmap / Action tracker":
-    st.title("Roadmap / Action tracker")
+    st.title("Feuille de route / Suivi des actions")
     st.markdown("<span class='badge-rec'>Proposition</span> Plan d'exécution recommandé.", unsafe_allow_html=True)
     adf = pd.DataFrame([
         ["Valider cadre IA", "Gouvernance", "Compliance + DSI", "0–3 mois", "À lancer", "Cadre validé"],
         ["Déployer formation", "Enablement", "RH + managers", "3–6 mois", "À lancer", "Taux adoption"],
         ["Piloter 3 cas d’usage", "Cas d’usage", "Directions métiers", "6–12 mois", "Planifié", "Gains business"],
-    ], columns=["Action", "Axe", "Owner suggéré", "Horizon", "Statut", "KPI"])
+    ], columns=["Action", "Axe", "Responsable suggéré", "Horizon", "Statut", "Indicateur clé"])
     st.dataframe(adf, use_container_width=True, hide_index=True)
 
 else:
