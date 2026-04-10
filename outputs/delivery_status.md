@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `df7382a` — Redesign Streamlit into transformation cockpit with governance views
+- `4049b98` — Redesign Streamlit into transformation cockpit with governance views
 
 ## D. push effectué ou non
 - Oui, push effectué sur `origin/feat/survey-streamlit-pr`.
