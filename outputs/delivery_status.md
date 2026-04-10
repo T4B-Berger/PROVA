@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `476f450` — Hotfix executive readiness: ordering, gating, labels, and verbatim UX
+- `7b647e8` — Update delivery status for PR #4 publication
 
 ## D. push effectué ou non
 - **Oui**
