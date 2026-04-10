@@ -7,31 +7,29 @@
 - `main`
 
 ## C. dernier commit
-- `git log -1 --oneline`
+- `476f450` — Hotfix executive readiness: ordering, gating, labels, and verbatim UX
 
 ## D. push effectué ou non
-- En cours
+- **Oui**
 
 ## E. PR créée ou non
-- En cours
+- **Oui**
 
 ## F. URL de PR
-- En cours
+- https://github.com/T4B-Berger/PROVA/pull/4
 
 ## G. statut de PR
-- En cours
+- `open` (ready for review, non draft)
 
 ## H. mergeable : oui/non
-- En cours
+- **Oui** (`mergeable=true`, `mergeable_state=clean`)
 
 ## I. prête à squash : oui/non
-- En cours
+- **Oui** (PR ouverte, sans conflit)
 
 ## J. impact attendu en prod
-- Visible après merge de la PR hotfix vers `main`.
+- Non visible tant que la PR #4 n'est pas merge dans `main`.
 
 ## K. action restante minimale
-1. Push branche hotfix.
-2. Ouvrir PR.
-3. Passer ready for review.
-4. Squash merge.
+1. Squash merge PR #4 vers `main`.
+2. Vérifier le redéploiement Streamlit sur `main`.
