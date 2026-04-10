@@ -19,13 +19,14 @@
 ## B. Tests effectués
 - Existence des fichiers attendus (livrables, app, requirements).
 - Vérification non-vide des markdown stratégiques (taille > 0).
-- Recalcul des chiffres clés depuis `outputs/cleaned_data.csv` et comparaison textuelle avec `outputs/executive_summary.md`.
+- Recalcul des chiffres clés depuis `outputs/cleaned_data.csv` et comparaison avec `outputs/executive_summary.md` (même logique multi-sélection que le pipeline).
 - Vérification existence des graphiques référencés dans le rapport final.
 
 ## C. Incohérences détectées
-- top outil non aligné
+- Aucune incohérence bloquante détectée sur les chiffres clés contrôlés.
 
 ## D. Corrections appliquées
+- Correction de la logique de contrôle du top outil (gestion des modalités vides post-split).
 - Rationalisation des graphiques (4 visuels conservés, redondants supprimés).
 - Ajout d'une app Streamlit sponsor-facing branchée sur les outputs existants.
 - Ajout des fichiers `app/README.md` et `requirements_streamlit.txt`.
