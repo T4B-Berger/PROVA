@@ -19,7 +19,7 @@
 - Tentative 3 après nouveaux commits: `git push origin feat/survey-streamlit-pr`
   - Résultat: échec (même erreur d'authentification)
 - Tentative 4 (token): push via URL HTTPS authentifiée par token
-  - Résultat: succès (`d297de5..HEAD_au_moment_du_push_final`)
+  - Résultat: succès (branche distante mise à jour)
 
 ## Méthode PR tentée
 - Méthode A (gh): indisponible (`gh` absent)

@@ -24,6 +24,9 @@ Finalisation du packaging de publication de l'analyse sponsor-ready du questionn
 - `outputs/final_quality_check.md` : contrôle qualité final.
 - `outputs/run_validation.md` : validations d'exécution.
 - `outputs/pr_status.md` : historique des blocages de publication.
+- `outputs/reviewer_guide.md` : guide de relecture orienté merge.
+- `outputs/demo_script.md` : script de démonstration 5 minutes.
+- `outputs/streamlit_release_note.md` : note de release de l'app Streamlit.
 - Mise à jour des livrables analytiques existants (`outputs/*.md`, charts, CSV) déjà inclus dans la branche.
 
 ### 3. Contrôles exécutés

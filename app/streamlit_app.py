@@ -26,21 +26,12 @@ def load_data() -> pd.DataFrame:
     return pd.read_csv(OUT / "cleaned_data.csv")
 
 
-@st.cache_data
-def load_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8")
-
-
 def pct_yes(df: pd.DataFrame, col: str) -> tuple[int, int, float]:
     s = df[col].dropna().astype(str).str.strip()
     yes = int((s == "Yes").sum())
     n = int(s.shape[0])
     pct = round(yes / n * 100, 1) if n else 0.0
     return yes, n, pct
-
-
-def split_multi(series: pd.Series) -> pd.Series:
-    return series.dropna().astype(str).str.split(";").explode().str.strip().replace("", pd.NA).dropna()
 
 
 def chi2(df: pd.DataFrame, a: str, b: str):
@@ -84,7 +75,6 @@ role_col = find_col(df, "primary_role")
 exp_col = find_col(df, "level_of_expertise")
 use_work_col = find_col(df, "used_ai_for_work_in_the_last_30_days")
 personal_col = find_col(df, "personal_life")
-work_multi_col = find_col(df, "what_do_you_use_ai_for_at_work")
 early_col = find_col(df, "early_adopters_team")
 
 yes_work, n_work, pct_work = pct_yes(df, use_work_col)
