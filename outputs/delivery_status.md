@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `d930d71` — Merge main into deck integration branch and resolve conflicts
+- `d2c323b` — Update delivery status for deck integration PR #5
 
 ## D. push effectué ou non
 - **Oui**
