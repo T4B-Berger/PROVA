@@ -4,15 +4,15 @@
 - Branche courante: `feat/survey-streamlit-pr`
 
 ## B. Commit
-- Dernier commit: `b28eb2e`
-- Message: `Add Streamlit sponsor app and final QA/validation reports`
+- Dernier commit: `fb4ac54`
+- Message: `Fix final quality check consistency logic`
 
 ## C. Push
 - Commande tentée: `git push -u origin feat/survey-streamlit-pr`
 - Statut: **échec**
 
 ## D. PR
-- Commande tentée: `gh pr create --draft --title "Add Streamlit sponsor report and finalize survey delivery assets" --body "..."`
+- Commande tentée: `gh pr create --draft --title "Add Streamlit sponsor report and finalize survey delivery assets" --body-file /tmp/pr_body.md`
 - Statut: **échec**
 
 ## E. Erreur exacte
