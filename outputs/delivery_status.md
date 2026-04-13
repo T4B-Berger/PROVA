@@ -1,13 +1,13 @@
 # Delivery status
 
 ## A. branche source
-- `hotfix/codir-ux-polish`
+- `hotfix/segmentation-compact-revert`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `fe62809` — Update delivery status for CoDir UX hotfix PR #8
+- `c03e4e9` — Simplify segmentation tables with compact two-line headers
 
 ## D. push effectué ou non
 - Oui
@@ -16,7 +16,7 @@
 - Oui
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/8
+- https://github.com/T4B-Berger/PROVA/pull/9
 
 ## G. statut de PR
 - open (ready for review)
@@ -31,5 +31,5 @@
 - Visible après merge de la PR hotfix vers `main`.
 
 ## K. action restante minimale
-1. Squash merge PR #8.
+1. Squash merge PR #9.
 2. Vérifier redeploy Streamlit sur `main`.
