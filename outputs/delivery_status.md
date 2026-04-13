@@ -1,13 +1,13 @@
 # Delivery status
 
 ## A. branche source
-- `hotfix/maturity-page-refonte`
+- `final/global-lock-refactor`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `af40f14` — Refonte la page Maturité avec lecture stratégique
+- `b4d365d` — Merge main and finalize global lock/refactor delivery status
 
 ## D. push effectué ou non
 - Oui
@@ -16,13 +16,13 @@
 - Oui
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/10
+- https://github.com/T4B-Berger/PROVA/pull/11
 
 ## G. statut de PR
 - open (ready for review, non draft)
 
 ## H. mergeable : oui/non
-- Oui (base `main`, état propre observé)
+- Oui (état propre attendu après résolution des conflits de base)
 
 ## I. prête à squash : oui/non
 - Oui
@@ -31,9 +31,9 @@
 - Non
 
 ## K. impact attendu en prod
-- Visible après squash merge PR #10 puis redéploiement Streamlit sur `main`.
+- Visible après squash merge PR #11 puis redéploiement Streamlit sur `main`.
 
 ## L. action restante minimale
-1. Squash merge PR #10.
+1. Squash merge PR #11.
 2. Vérifier redéploiement Streamlit.
-3. Contrôle visuel de la page Maturité en production.
+3. Contrôle visuel de l’écran d’accès global puis de la navigation métier.
