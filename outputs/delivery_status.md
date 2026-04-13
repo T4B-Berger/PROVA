@@ -1,35 +1,36 @@
 # Delivery status
 
 ## A. branche source
-- `hotfix/segmentation-table-readability`
+- `hotfix/codir-ux-polish`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `0763377` — Update delivery status for segmentation readability PR #6
+- `git log -1 --oneline`
 
 ## D. push effectué ou non
-- **Oui**
+- Oui
 
 ## E. PR créée ou non
-- **Oui**
+- Oui
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/6
+- À renseigner après création PR
 
 ## G. statut de PR
-- `open` (ready for review, non draft)
+- open (ready for review)
 
 ## H. mergeable : oui/non
-- **Oui** (`mergeable=true`, `mergeable_state=clean`)
+- À confirmer après création PR
 
 ## I. prête à squash : oui/non
-- **Oui** (PR ouverte, sans conflit)
+- À confirmer après création PR
 
 ## J. impact attendu en prod
-- Non visible tant que la PR #6 n'est pas merge dans `main`.
+- Visible après merge de la PR hotfix vers `main`.
 
 ## K. action restante minimale
-1. Squash merge PR #6 vers `main`.
-2. Vérifier le redéploiement Streamlit sur `main`.
+1. Confirmer mergeabilité.
+2. Squash merge.
+3. Vérifier redeploy Streamlit.

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
+import altair as alt
 import pandas as pd
 import streamlit as st
 from scipy.stats import chi2_contingency
@@ -21,6 +22,8 @@ h1, h2, h3 {color:#3B2A1A;}
 .kpi-title {font-size:0.82rem;color:#7A6A57;text-transform:uppercase;}
 .kpi-value {font-size:1.6rem;font-weight:700;color:#8C5A2B;}
 .section-box {background:#FFFDF9;border-left:5px solid #8C5A2B;border-radius:8px;padding:12px 14px;margin:8px 0 14px 0;}
+.message-card {background:#FFFDF9;border:1px solid #E4D8C8;border-radius:10px;padding:10px 12px;min-height:110px;}
+.message-title {font-size:0.88rem;font-weight:700;color:#5C4128;margin-bottom:6px;}
 .badge-fact {display:inline-block;background:#E6EFE8;color:#24543A;padding:3px 8px;border-radius:999px;font-size:0.78rem;}
 .badge-rec {display:inline-block;background:#EFE8DD;color:#5C4128;padding:3px 8px;border-radius:999px;font-size:0.78rem;}
 .small {color:#6B6258;font-size:0.86rem;}
@@ -184,7 +187,7 @@ beg_pct = round((beg_n / len(exp_s) * 100), 1) if len(exp_s) else 0.0
 # Navigation lists (single source of truth)
 FACTUAL_PAGES = [
     "Accueil",
-    "Cockpit COMEX factuel",
+    "Cockpit CoDir factuel",
     "Maturité",
     "Segmentations",
     "Réponses individuelles",
@@ -227,8 +230,8 @@ if view == "Accueil":
     st.title("PROVA — Lecture factuelle des réponses IA")
     st.markdown(
         "<div class='section-box'><span class='badge-fact'>Message directeur</span> "
-        "L’entreprise n’est plus au stade de l’exploration : l’usage est déjà large, la valeur est visible, "
-        "et le prochain enjeu est de cadrer le risque puis d’industrialiser quelques cas d’usage prioritaires."
+        "L’entreprise n’est plus au stade de <b>l’exploration</b> : l’usage est déjà <b>large</b>, la valeur est <b>visible</b>, "
+        "et le prochain enjeu est de <b>cadrer le risque</b> puis d’<b>industrialiser</b> quelques cas d’usage prioritaires."
         "</div>",
         unsafe_allow_html=True,
     )
@@ -240,12 +243,18 @@ if view == "Accueil":
     with c:
         card("Débutants IA", f"{beg_pct}%", f"{beg_n}/{len(exp_s)}")
     st.subheader("Quatre messages de synthèse")
-    st.markdown(
-        "1. Le sujet n’est plus exploratoire : l’usage est déjà installé.\n"
-        "2. La valeur est visible : gains de temps, qualité et créativité.\n"
-        "3. Le frein principal est le risque : confidentialité, conformité, fiabilité.\n"
-        "4. Le prochain mouvement est opérationnel : cadre simple, pilotes ciblés, diffusion."
-    )
+    mcols = st.columns(4)
+    messages = [
+        ("1. Usage installé", "Le sujet n’est plus exploratoire : l’usage est déjà actif."),
+        ("2. Valeur visible", "Les gains de temps, de qualité et de créativité sont déjà observables."),
+        ("3. Risque à cadrer", "Confidentialité, conformité et fiabilité appellent un cadre clair."),
+        ("4. Passage à l’échelle", "Le prochain mouvement est opérationnel : cadre, pilotes et diffusion."),
+    ]
+    for col, (title, body) in zip(mcols, messages):
+        col.markdown(
+            f"<div class='message-card'><div class='message-title'>{title}</div><div class='small'>{body}</div></div>",
+            unsafe_allow_html=True,
+        )
     if not desc_only:
         st.markdown(
             "<span class='badge-rec'>Décision attendue</span> Passer d’usages individuels non gouvernés "
@@ -253,8 +262,8 @@ if view == "Accueil":
             unsafe_allow_html=True,
         )
 
-elif view == "Cockpit COMEX factuel":
-    st.title("Cockpit COMEX factuel")
+elif view == "Cockpit CoDir factuel":
+    st.title("Cockpit CoDir factuel")
     a, b, c, d = st.columns(4)
     e = DF[COLS["early"]].dropna().astype(str)
     ey = int((e == "Yes").sum())
@@ -262,9 +271,9 @@ elif view == "Cockpit COMEX factuel":
     with a: card("Adoption pro", f"{use_pct}%")
     with b: card("Adoption perso", f"{pers_pct}%")
     with c: card("Débutants", f"{beg_pct}%")
-    with d: card("Early adopters (Yes)", f"{ep}%", f"{ey}/{len(e)}")
+    with d: card("Early adopters identifiés", f"{ep}%", f"{ey}/{len(e)}")
 
-    st.subheader("Synthèse compacte pour comité de direction")
+    st.subheader("Synthèse compacte pour le CoDir")
     c1, c2 = st.columns([1, 1])
     with c1:
         p = CHARTS / "usage_ai_travail_distribution.png"
@@ -276,9 +285,21 @@ elif view == "Cockpit COMEX factuel":
         exp_table["Niveau d’expertise"] = pd.Categorical(exp_table["Niveau d’expertise"], categories=EXPERTISE_ORDER, ordered=True)
         exp_table = exp_table.sort_values("Niveau d’expertise")
         st.dataframe(exp_table, hide_index=True, use_container_width=True)
+        pie_data = exp_table.copy()
+        pie = (
+            alt.Chart(pie_data)
+            .mark_arc(innerRadius=45)
+            .encode(
+                theta=alt.Theta(field="Volume", type="quantitative"),
+                color=alt.Color("Niveau d’expertise:N", legend=alt.Legend(title="Niveau d’expertise")),
+                tooltip=["Niveau d’expertise", "Volume"],
+            )
+            .properties(height=220)
+        )
+        st.altair_chart(pie, use_container_width=True)
 
-    st.markdown("<span class='badge-fact'>Fait observé</span> Vue direction générale : indicateurs clés et visuels compacts.", unsafe_allow_html=True)
-    st.subheader("Lecture COMEX en quatre messages")
+    st.markdown("<span class='badge-fact'>Fait observé</span> Vue de direction : indicateurs clés, visuels compacts et lecture immédiate.", unsafe_allow_html=True)
+    st.subheader("Lecture CoDir en quatre messages")
     summary = pd.DataFrame(
         [
             ["Le sujet n’est plus exploratoire", "57/70 utilisent déjà l’intelligence artificielle au travail"],
@@ -291,19 +312,20 @@ elif view == "Cockpit COMEX factuel":
     st.dataframe(summary, hide_index=True, use_container_width=True)
 
 elif view == "Maturité":
-    st.title("Maturité")
+    st.title("Maturité de l’organisation")
+    st.caption("Cette page présente les dimensions observées, leur niveau actuel et leur signification opérationnelle.")
     rows = [
-        ["Appétence", "Élevée", "Adoption pro/perso visible", "Renforcer par cas d'usage"],
-        ["Maturité d’usage", "Intermédiaire faible", "Débutants majoritaires", "Former par fonction"],
-        ["Valeur business", "Prometteuse", "Usages productivité dominants", "Industrialiser 3 cas"],
-        ["Gouvernance", "À structurer", "Risque cité", "Cadre autorisé/toléré/interdit"],
-        ["Industrialisation", "Démarrage", "Pratiques hétérogènes", "Standardiser les pratiques et les indicateurs clés"],
-        ["Diffusion", "Possible", "Vivier early adopters", "Activer réseau relais"],
+        ["Appétence", "Élevée", "Adoption au travail et en usage personnel déjà visible", "Renforcer par des cas d’usage concrets"],
+        ["Maturité d’usage", "Intermédiaire initiale", "Part importante de profils débutants", "Former par fonction"],
+        ["Valeur métier", "Prometteuse", "Usages orientés productivité et qualité", "Industrialiser trois cas prioritaires"],
+        ["Gouvernance", "À structurer", "Risque et fiabilité mentionnés par les répondants", "Clarifier autorisé / toléré / interdit"],
+        ["Industrialisation", "En démarrage", "Pratiques hétérogènes selon les équipes", "Standardiser pratiques et indicateurs"],
+        ["Diffusion", "Possible", "Réseau d’early adopters déjà identifiable", "Activer les relais"],
     ]
-    maturity_df = pd.DataFrame(rows, columns=["Dimension", "État actuel", "Lecture", "Priorité d’action"])
+    maturity_df = pd.DataFrame(rows, columns=["Dimension", "Niveau observé", "Lecture factuelle", "Enjeu associé"])
     if desc_only:
-        maturity_df = maturity_df.drop(columns=["Priorité d’action"])
-    st.dataframe(maturity_df, use_container_width=True, hide_index=True)
+        maturity_df = maturity_df.drop(columns=["Enjeu associé"])
+    st.dataframe(maturity_df, use_container_width=True, hide_index=True, height=290)
 
 elif view == "Segmentations":
     st.title("Segmentations")
@@ -348,15 +370,19 @@ elif view == "Segmentations":
         ct_display["Total ligne"] = ct_display.sum(axis=1)
         total_row = pd.DataFrame([ct_display.sum(axis=0)], index=["Total colonne"])
         ct_display = pd.concat([ct_display, total_row])
-        st.dataframe(ct_display, use_container_width=True)
+        st.dataframe(ct_display, use_container_width=True, height=260)
 
         pct = ct.div(ct.sum(axis=1), axis=0).fillna(0).mul(100).round(1)
         st.caption("Pourcentages par ligne (%).")
-        st.dataframe(pct, use_container_width=True)
+        st.dataframe(pct, use_container_width=True, height=240)
         if p is None:
             st.write("Variabilité insuffisante.")
         else:
             st.write(f"Chi2={c2:.2f}, ddl={dof}, p={p:.4f}")
+            st.caption(
+                "Lecture simple : Chi2 mesure l’écart de répartition entre groupes ; "
+                "ddl indique les degrés de liberté ; p indique si l’écart observé est probablement significatif."
+            )
         st.caption("Lecture factuelle: association statistique, pas causalité.")
 
 elif view == "Réponses individuelles":
@@ -471,7 +497,7 @@ elif view == "Artefacts descriptifs / sources":
     st.title("Artefacts descriptifs / sources")
     artefacts = [
         ("outputs/executive_summary.md", "Synthèse dirigeant"),
-        ("outputs/one_pager_comex.md", "One pager COMEX"),
+        ("outputs/one_pager_comex.md", "One pager CoDir"),
         ("outputs/analysis_report.md", "Rapport détaillé"),
         ("outputs/cleaned_data.csv", "Données nettoyées"),
         ("outputs/variable_dictionary.csv", "Dictionnaire de variables"),
@@ -521,7 +547,7 @@ elif view == "Roadmap / Action tracker":
 
 else:
     st.title("Recommandations / priorisation")
-    st.markdown("<span class='badge-rec'>Décisions COMEX attendues</span> Quatre arbitrages suffisent pour sortir du statu quo.", unsafe_allow_html=True)
+    st.markdown("<span class='badge-rec'>Décisions CoDir attendues</span> Quatre arbitrages suffisent pour sortir du statu quo.", unsafe_allow_html=True)
     st.write(
         "1. Valider un cadre d’usage de l’intelligence artificielle simple et clair.\n"
         "2. Nommer un sponsor exécutif global et un responsable métier par pilote.\n"
