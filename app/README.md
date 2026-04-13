@@ -65,6 +65,7 @@ Principe appliqué : chaque tableau croisé doit être lisible sans connaissance
 ### Règles de lisibilité
 - Pas de colonnes ou lignes ambiguës `Yes` / `No` affichées seules.
 - Libellés binaires explicités en français (usage au travail, usage personnel, early adopters).
+- En-têtes longs mis sur deux lignes pour garder des tableaux compacts et lisibles.
 - Sous-titres d’aide pour préciser le sens des lignes et des colonnes.
-- Totaux de ligne/colonne et pourcentages par ligne pour faciliter l’interprétation CoDir.
+- Pourcentages par ligne accessibles dans un bloc repliable pour limiter la surcharge visuelle.
 - Lecture simplifiée du test statistique affiché (`Chi2`, `ddl`, `p`) pour une compréhension immédiate de direction.

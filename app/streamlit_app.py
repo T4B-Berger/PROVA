@@ -127,6 +127,16 @@ def relabel_binary_axis(df: pd.DataFrame, axis: str, key: str) -> pd.DataFrame:
     return out
 
 
+def compact_header(label: str) -> str:
+    mapping = {
+        "N’utilise pas l’intelligence artificielle au travail (30 derniers jours)": "N’utilise pas l’intelligence artificielle au travail\n(30 derniers jours)",
+        "Utilise l’intelligence artificielle au travail (30 derniers jours)": "Utilise l’intelligence artificielle au travail\n(30 derniers jours)",
+        "N’utilise pas l’intelligence artificielle dans la vie personnelle": "N’utilise pas l’intelligence artificielle\ndans la vie personnelle",
+        "Utilise l’intelligence artificielle dans la vie personnelle": "Utilise l’intelligence artificielle\ndans la vie personnelle",
+    }
+    return mapping.get(str(label), str(label))
+
+
 TAXONOMY = {
     "irritant": ["admin", "manual", "paperwork", "routine", "time-consuming", "annoy"],
     "opportunite": ["improve", "faster", "save", "efficiency", "value", "better"],
@@ -365,16 +375,12 @@ elif view == "Segmentations":
             ct = sort_index_expertise(ct)
         ct = relabel_binary_axis(ct, "index", item["row_key"])
         ct = relabel_binary_axis(ct, "columns", item["col_key"])
+        ct.columns = [compact_header(c) for c in ct.columns]
 
-        ct_display = ct.copy()
-        ct_display["Total ligne"] = ct_display.sum(axis=1)
-        total_row = pd.DataFrame([ct_display.sum(axis=0)], index=["Total colonne"])
-        ct_display = pd.concat([ct_display, total_row])
-        st.dataframe(ct_display, use_container_width=True, height=260)
-
+        st.dataframe(ct, use_container_width=True, height=230)
         pct = ct.div(ct.sum(axis=1), axis=0).fillna(0).mul(100).round(1)
-        st.caption("Pourcentages par ligne (%).")
-        st.dataframe(pct, use_container_width=True, height=240)
+        with st.expander("Afficher les pourcentages par ligne (%)"):
+            st.dataframe(pct, use_container_width=True, height=210)
         if p is None:
             st.write("Variabilité insuffisante.")
         else:
