@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `c03e4e9` — Simplify segmentation tables with compact two-line headers
+- `568f890` — Update delivery status for segmentation revert hotfix PR #9
 
 ## D. push effectué ou non
 - Oui
