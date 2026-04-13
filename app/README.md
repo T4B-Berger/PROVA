@@ -1,14 +1,13 @@
 # Application Streamlit — PROVA (hotfix comité de direction)
 
-## 1) Protection du mode prescriptif
-Le contrôle global de la sidebar est `Description seule`.
-- `Oui` : mode strictement descriptif.
-- `Non` : accès au mode prescriptif uniquement après validation du mot de passe de session.
+## 1) Protection globale de l’application
+Avant tout rendu métier, l’application demande un mot de passe global de session.
 
 ### Protection mise en place
-- Mot de passe requis pour activer le mode `Non` : `iqo`.
+- Mot de passe global requis : `Bordeaux2026`.
 - Saisie masquée (`type="password"`).
 - État mémorisé par session (`st.session_state`).
+- Tant que le mot de passe n’est pas validé, aucune page métier n’est rendue.
 - Cette protection est **légère** (contrôle d’accès applicatif), et **ne remplace pas** un dispositif de sécurité forte.
 
 ## 2) Ordre métier
@@ -33,7 +32,7 @@ La page `Verbatims intelligents` propose :
 
 ## 5) Navigation
 - `Description seule = Oui` : pages factuelles uniquement.
-- `Description seule = Non` : pages factuelles + pages prescriptives (si mot de passe validé).
+- `Description seule = Non` : pages factuelles + pages prescriptives.
 
 ## 6) Lancement local
 ```bash
@@ -69,3 +68,9 @@ Principe appliqué : chaque tableau croisé doit être lisible sans connaissance
 - Sous-titres d’aide pour préciser le sens des lignes et des colonnes.
 - Pourcentages par ligne accessibles dans un bloc repliable pour limiter la surcharge visuelle.
 - Lecture simplifiée du test statistique affiché (`Chi2`, `ddl`, `p`) pour une compréhension immédiate de direction.
+
+## 9) Principes de structuration/refactorisation
+- Centralisation des helpers utilitaires (filtres, listes uniques, contrôle d’accès session).
+- Réduction des duplications dans la logique de filtrage et de mapping.
+- Conservation stricte du rendu visuel, des textes métier et de la navigation fonctionnelle existante.
+- Simplification des blocs techniques redondants pour améliorer lisibilité et maintenance.

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hmac
 from pathlib import Path
 import re
 import altair as alt
@@ -10,6 +11,8 @@ from scipy.stats import chi2_contingency
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs"
 CHARTS = OUT / "charts"
+GLOBAL_ACCESS_PASSWORD = "Bordeaux2026"
+SESSION_GLOBAL_ACCESS_KEY = "global_access_granted"
 
 st.set_page_config(page_title="PROVA IA Transformation Cockpit", layout="wide")
 
@@ -171,7 +174,58 @@ def respondent_block(row: pd.Series, cols: dict[str, str]) -> dict[str, str]:
     }
 
 
+def unique_sorted_values(df: pd.DataFrame, col: str) -> list[str]:
+    return sorted(df[col].dropna().astype(str).unique().tolist())
+
+
+def apply_common_filters(
+    df: pd.DataFrame,
+    cols: dict[str, str],
+    role_filter: list[str],
+    use_filter: list[str],
+    exp_filter: list[str],
+    early_filter: list[str],
+    fulltext: str,
+) -> pd.DataFrame:
+    sub = df
+    if role_filter:
+        sub = sub[sub[cols["role"]].astype(str).isin(role_filter)]
+    if use_filter:
+        sub = sub[sub[cols["use_work"]].astype(str).isin(use_filter)]
+    if exp_filter:
+        sub = sub[sub[cols["exp"]].astype(str).isin(exp_filter)]
+    if early_filter:
+        sub = sub[sub[cols["early"]].astype(str).isin(early_filter)]
+    if fulltext:
+        mask = sub.astype(str).apply(lambda r: r.str.contains(fulltext, case=False, na=False)).any(axis=1)
+        sub = sub[mask]
+    return sub
+
+
+def ensure_global_access() -> None:
+    if SESSION_GLOBAL_ACCESS_KEY not in st.session_state:
+        st.session_state[SESSION_GLOBAL_ACCESS_KEY] = False
+    if st.session_state[SESSION_GLOBAL_ACCESS_KEY]:
+        return
+
+    st.title("Accès protégé")
+    st.caption("Cette application est protégée par un mot de passe global de session.")
+    st.info("Protection légère applicative (non destinée à la sécurité forte).")
+    with st.form("global_access_form"):
+        pwd = st.text_input("Mot de passe", type="password")
+        submitted = st.form_submit_button("Entrer dans l’application", use_container_width=True)
+    if submitted:
+        if hmac.compare_digest(pwd, GLOBAL_ACCESS_PASSWORD):
+            st.session_state[SESSION_GLOBAL_ACCESS_KEY] = True
+            st.success("Accès autorisé pour cette session.")
+            st.rerun()
+        else:
+            st.error("Mot de passe incorrect.")
+    st.stop()
+
+
 # Data
+ensure_global_access()
 DF = load_df()
 COLS = {
     "role": find_col(DF, "primary_role"),
@@ -215,23 +269,8 @@ PRESCRIPTIVE_PAGES = [
 
 # Global control (must be first element in sidebar)
 desc_mode = st.sidebar.radio("Description seule", ["Oui", "Non"], index=0)
-if "prescriptive_unlocked" not in st.session_state:
-    st.session_state["prescriptive_unlocked"] = False
-
-if desc_mode == "Non" and not st.session_state["prescriptive_unlocked"]:
-    st.sidebar.warning("Accès au mode prescriptif protégé.")
-    pwd = st.sidebar.text_input("Mot de passe", type="password")
-    if st.sidebar.button("Valider l’accès", use_container_width=True):
-        if pwd == "iqo":
-            st.session_state["prescriptive_unlocked"] = True
-            st.sidebar.success("Accès prescriptif autorisé pour cette session.")
-        else:
-            st.sidebar.error("Mot de passe incorrect.")
-
-desc_only = not (desc_mode == "Non" and st.session_state["prescriptive_unlocked"])
-if desc_mode == "Non" and desc_only:
-    st.sidebar.info("Restez en mode descriptif tant que le mot de passe n'est pas validé.")
-st.sidebar.caption("Protection légère d’accès au mode prescriptif (non destinée à la sécurité forte).")
+desc_only = desc_mode == "Oui"
+st.sidebar.caption("Protection globale par mot de passe de session (protection légère applicative).")
 
 menu_options = FACTUAL_PAGES if desc_only else FACTUAL_PAGES + PRESCRIPTIVE_PAGES
 view = st.sidebar.radio("Navigation", menu_options)
@@ -393,29 +432,17 @@ elif view == "Segmentations":
 
 elif view == "Réponses individuelles":
     st.title("Réponses individuelles")
-    role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", sorted(DF[COLS["role"]].dropna().astype(str).unique().tolist()))
+    role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", unique_sorted_values(DF, COLS["role"]))
     use_filter_display = st.multiselect(
         f"Filtre — {QUESTION_LABELS['use_work']}",
-        [BINARY_LABELS["use_work"].get(v, v) for v in sorted(DF[COLS["use_work"]].dropna().astype(str).unique().tolist())],
+        [BINARY_LABELS["use_work"].get(v, v) for v in unique_sorted_values(DF, COLS["use_work"])],
     )
     use_reverse = {v: k for k, v in BINARY_LABELS["use_work"].items()}
     use_filter = [use_reverse.get(v, v) for v in use_filter_display]
     exp_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['exp']}", ordered_expertise(DF[COLS["exp"]].dropna().astype(str).unique().tolist()))
-    early_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['early']}", sorted(DF[COLS["early"]].dropna().astype(str).unique().tolist()))
+    early_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['early']}", unique_sorted_values(DF, COLS["early"]))
     q = st.text_input("Recherche plein texte")
-
-    sub = DF.copy()
-    if role_filter:
-        sub = sub[sub[COLS["role"]].astype(str).isin(role_filter)]
-    if use_filter:
-        sub = sub[sub[COLS["use_work"]].astype(str).isin(use_filter)]
-    if exp_filter:
-        sub = sub[sub[COLS["exp"]].astype(str).isin(exp_filter)]
-    if early_filter:
-        sub = sub[sub[COLS["early"]].astype(str).isin(early_filter)]
-    if q:
-        mask = sub.astype(str).apply(lambda r: r.str.contains(q, case=False, na=False)).any(axis=1)
-        sub = sub[mask]
+    sub = apply_common_filters(DF.copy(), COLS, role_filter, use_filter, exp_filter, early_filter, q)
 
     st.write(f"Réponses filtrées: {len(sub)}")
     if len(sub) == 0:
@@ -468,7 +495,7 @@ elif view == "Verbatims intelligents":
     tag_freq = ex["tags"].value_counts().rename_axis("tag").reset_index(name="frequence")
 
     tag_filter = st.multiselect("Filtre thème/tag", sorted(tag_freq["tag"].unique().tolist()))
-    role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", sorted(vdf["role"].unique().tolist()))
+    role_filter = st.multiselect(f"Filtre — {QUESTION_LABELS['role']}", sorted(vdf["role"].astype(str).unique().tolist()))
     q = st.text_input("Recherche verbatim")
 
     vf = vdf.copy()
@@ -515,7 +542,7 @@ elif view == "Artefacts descriptifs / sources":
 elif view == "Use case lab":
     st.title("Laboratoire des cas d’usage")
     st.markdown("<span class='badge-rec'>Proposition</span> Vue prescriptive activée car Description seule = Non.", unsafe_allow_html=True)
-    st.dataframe(pd.read_markdown if False else pd.DataFrame([
+    st.dataframe(pd.DataFrame([
         ["Automatisation rédaction & synthèse", "Irritants de charge rédactionnelle", "Gain de temps", "Moyenne", "GED/bureautique", "Direction métiers", "0–6 mois", "Temps gagné"],
         ["Copilote analyse commerciale", "Verbatims sales/analysis", "Décision accélérée", "Moyenne", "CRM/data ventes", "Direction commerciale", "3–12 mois", "Cycle décision"],
     ], columns=["Cas d’usage", "Problème métier", "Valeur attendue", "Complexité", "Dépendances SI", "Sponsor proposé", "Horizon", "KPI suggérés"]), use_container_width=True, hide_index=True)
