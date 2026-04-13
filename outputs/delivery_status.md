@@ -1,13 +1,13 @@
 # Delivery status
 
 ## A. branche source
-- `hotfix/segmentation-compact-revert`
+- `final/global-lock-refactor`
 
 ## B. branche cible
 - `main`
 
 ## C. dernier commit
-- `568f890` — Update delivery status for segmentation revert hotfix PR #9
+- `99c30f3` — Add global app password gate and technical refactor pass
 
 ## D. push effectué ou non
 - Oui
@@ -16,20 +16,24 @@
 - Oui
 
 ## F. URL de PR
-- https://github.com/T4B-Berger/PROVA/pull/9
+- https://github.com/T4B-Berger/PROVA/pull/11
 
 ## G. statut de PR
-- open (ready for review)
+- open (ready for review, non draft)
 
 ## H. mergeable : oui/non
-- Oui (`mergeable=true`, `mergeable_state=clean`)
+- Oui (état propre attendu après résolution des conflits de base)
 
 ## I. prête à squash : oui/non
 - Oui
 
-## J. impact attendu en prod
-- Visible après merge de la PR hotfix vers `main`.
+## J. mergée : oui/non
+- Non
 
-## K. action restante minimale
-1. Squash merge PR #9.
-2. Vérifier redeploy Streamlit sur `main`.
+## K. impact attendu en prod
+- Visible après squash merge PR #11 puis redéploiement Streamlit sur `main`.
+
+## L. action restante minimale
+1. Squash merge PR #11.
+2. Vérifier redéploiement Streamlit.
+3. Contrôle visuel de l’écran d’accès global puis de la navigation métier.

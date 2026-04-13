@@ -58,6 +58,7 @@ L’application intègre une sélection raisonnée du deck CoDir (et non un copi
 - Conserver une interface lisible, orientée décision.
 - Améliorer la narration sans surcharge ni duplication.
 - Maintenir la séparation stricte entre constat factuel et contenus prescriptifs.
+
 ## 8) Lisibilité des tableaux de segmentation
 Principe appliqué : chaque tableau croisé doit être lisible sans connaissance du questionnaire source.
 
@@ -69,7 +70,17 @@ Principe appliqué : chaque tableau croisé doit être lisible sans connaissance
 - Pourcentages par ligne accessibles dans un bloc repliable pour limiter la surcharge visuelle.
 - Lecture simplifiée du test statistique affiché (`Chi2`, `ddl`, `p`) pour une compréhension immédiate de direction.
 
-## 9) Principes de structuration/refactorisation
+## 9) Logique de la page Maturité
+La page Maturité est structurée pour une lecture de direction en trois niveaux :
+1. **Lecture d’ensemble** (ce qui est installé, hétérogène, à structurer).
+2. **Lecture par dimensions** (appétence, maturité d’usage, valeur métier, gouvernance, industrialisation, diffusion) avec faits marquants.
+3. **Mise en perspective** pour comprendre la dynamique globale.
+
+### Factuel vs prescriptif
+- En mode `Description seule = Oui` : la page reste strictement descriptive.
+- En mode `Description seule = Non` : une courte lecture prescriptive est ajoutée et explicitement marquée.
+
+## 10) Principes de structuration/refactorisation
 - Centralisation des helpers utilitaires (filtres, listes uniques, contrôle d’accès session).
 - Réduction des duplications dans la logique de filtrage et de mapping.
 - Conservation stricte du rendu visuel, des textes métier et de la navigation fonctionnelle existante.
