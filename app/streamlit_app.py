@@ -323,19 +323,68 @@ elif view == "Cockpit CoDir factuel":
 
 elif view == "Maturité":
     st.title("Maturité de l’organisation")
-    st.caption("Cette page présente les dimensions observées, leur niveau actuel et leur signification opérationnelle.")
+    st.caption("La maturité est lue ici à travers six dimensions observées dans les réponses, sans score artificiel unique.")
+
+    # preuves factuelles simples
+    benefits_series = split_multi(DF[COLS["benefits"]]) if COLS["benefits"] in DF.columns else pd.Series(dtype=str)
+    time_saved_n = int((benefits_series == "Time saved").sum()) if len(benefits_series) else 0
+    work_users = DF[COLS["use_work"]].astype(str).eq("Yes").sum()
+    time_saved_pct = round((time_saved_n / work_users * 100), 1) if work_users else 0.0
+
+    issues_series = DF[COLS["issues"]].dropna().astype(str)
+    issues_yes = int(issues_series.str.lower().str.startswith("yes").sum())
+    issues_pct = round((issues_yes / len(issues_series) * 100), 1) if len(issues_series) else 0.0
+
+    freq_series = DF[COLS["freq"]].dropna().astype(str)
+    frequent_n = int(freq_series.isin(["Daily", "2–3 times/week"]).sum())
+    frequent_pct = round((frequent_n / len(freq_series) * 100), 1) if len(freq_series) else 0.0
+
+    early_series = DF[COLS["early"]].dropna().astype(str)
+    early_yes = int((early_series == "Yes").sum())
+    early_pct = round((early_yes / len(early_series) * 100), 1) if len(early_series) else 0.0
+
+    st.markdown(
+        "<div class='section-box'><b>Lecture d’ensemble</b><br/>"
+        "L’usage est déjà installé, mais la maturité reste hétérogène. "
+        "La valeur est visible sur les usages du quotidien, tandis que la gouvernance et l’industrialisation restent à structurer."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    s1, s2, s3 = st.columns(3)
+    with s1:
+        card("Ce qui est déjà installé", f"{use_pct}% d’usage au travail", "Adoption réelle dans les 30 derniers jours")
+    with s2:
+        card("Ce qui reste hétérogène", f"{beg_pct}% de profils débutants", "Niveau d’appropriation encore inégal")
+    with s3:
+        card("Ce qui doit se structurer", f"{issues_pct}% signalent des incidents", "Qualité, risque et fiabilité à cadrer")
+
     rows = [
-        ["Appétence", "Élevée", "Adoption au travail et en usage personnel déjà visible", "Renforcer par des cas d’usage concrets"],
-        ["Maturité d’usage", "Intermédiaire initiale", "Part importante de profils débutants", "Former par fonction"],
-        ["Valeur métier", "Prometteuse", "Usages orientés productivité et qualité", "Industrialiser trois cas prioritaires"],
-        ["Gouvernance", "À structurer", "Risque et fiabilité mentionnés par les répondants", "Clarifier autorisé / toléré / interdit"],
-        ["Industrialisation", "En démarrage", "Pratiques hétérogènes selon les équipes", "Standardiser pratiques et indicateurs"],
-        ["Diffusion", "Possible", "Réseau d’early adopters déjà identifiable", "Activer les relais"],
+        ["Appétence", "Élevée", f"{use_pct}% d’usage au travail et {pers_pct}% d’usage personnel", "Adoption large, base de déploiement déjà présente", "Consolider par des cas d’usage métiers concrets"],
+        ["Maturité d’usage", "Intermédiaire initiale", f"{beg_pct}% de profils débutants", "Usage réel mais fortement hétérogène selon les profils", "Accompagner par fonction avec des formats courts"],
+        ["Valeur métier", "Prometteuse", f"{time_saved_pct}% citent le gain de temps", "Bénéfices déjà perçus sur les tâches cognitives du quotidien", "Prioriser les usages à impact mesurable"],
+        ["Gouvernance", "À structurer", f"{issues_pct}% rapportent des incidents ou mauvaises surprises", "Le risque n’est pas théorique : il est déjà vécu", "Clarifier les règles d’usage et la validation humaine"],
+        ["Industrialisation", "En démarrage", f"{frequent_pct}% d’usages fréquents (quotidien ou 2–3 fois/semaine)", "Des pratiques actives existent, mais restent dispersées", "Standardiser les pratiques et le suivi des résultats"],
+        ["Diffusion", "Possible", f"{early_pct}% d’early adopters identifiés", "Un réseau de relais est déjà mobilisable", "Structurer l’animation et le partage entre équipes"],
     ]
-    maturity_df = pd.DataFrame(rows, columns=["Dimension", "Niveau observé", "Lecture factuelle", "Enjeu associé"])
+    maturity_df = pd.DataFrame(rows, columns=["Dimension", "Niveau observé", "Fait marquant", "Lecture factuelle", "Implication opérationnelle"])
     if desc_only:
-        maturity_df = maturity_df.drop(columns=["Enjeu associé"])
-    st.dataframe(maturity_df, use_container_width=True, hide_index=True, height=290)
+        maturity_df = maturity_df.drop(columns=["Implication opérationnelle"])
+    st.dataframe(maturity_df, use_container_width=True, hide_index=True, height=355)
+
+    st.subheader("Mise en perspective")
+    st.markdown(
+        "- **Fort aujourd’hui** : adoption réelle et premiers bénéfices déjà visibles.\n"
+        "- **Fragile aujourd’hui** : hétérogénéité des niveaux et incidents de qualité signalés.\n"
+        "- **Transition à piloter** : passer d’initiatives individuelles à un cadre commun mesuré."
+    )
+
+    if not desc_only:
+        st.markdown(
+            "<span class='badge-rec'>Lecture prescriptive</span> La maturité actuelle justifie une montée en puissance progressive : "
+            "cadre minimal, apprentissage ciblé et quelques pilotes à impact démontré.",
+            unsafe_allow_html=True,
+        )
 
 elif view == "Segmentations":
     st.title("Segmentations")
