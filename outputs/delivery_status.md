@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `99c30f3` — Add global app password gate and technical refactor pass
+- `b4d365d` — Merge main and finalize global lock/refactor delivery status
 
 ## D. push effectué ou non
 - Oui
