@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `git log -1 --oneline`
+- `989362e` — Polish CoDir UX: terminology, readability, maturity and cockpit visuals
 
 ## D. push effectué ou non
 - Oui
@@ -16,21 +16,20 @@
 - Oui
 
 ## F. URL de PR
-- À renseigner après création PR
+- https://github.com/T4B-Berger/PROVA/pull/8
 
 ## G. statut de PR
 - open (ready for review)
 
 ## H. mergeable : oui/non
-- À confirmer après création PR
+- Oui (`mergeable=true`, `mergeable_state=clean`)
 
 ## I. prête à squash : oui/non
-- À confirmer après création PR
+- Oui
 
 ## J. impact attendu en prod
 - Visible après merge de la PR hotfix vers `main`.
 
 ## K. action restante minimale
-1. Confirmer mergeabilité.
-2. Squash merge.
-3. Vérifier redeploy Streamlit.
+1. Squash merge PR #8.
+2. Vérifier redeploy Streamlit sur `main`.
