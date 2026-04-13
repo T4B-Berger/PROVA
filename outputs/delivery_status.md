@@ -7,7 +7,7 @@
 - `main`
 
 ## C. dernier commit
-- `989362e` — Polish CoDir UX: terminology, readability, maturity and cockpit visuals
+- `fe62809` — Update delivery status for CoDir UX hotfix PR #8
 
 ## D. push effectué ou non
 - Oui
