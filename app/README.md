@@ -69,3 +69,13 @@ Principe appliqué : chaque tableau croisé doit être lisible sans connaissance
 - Sous-titres d’aide pour préciser le sens des lignes et des colonnes.
 - Pourcentages par ligne accessibles dans un bloc repliable pour limiter la surcharge visuelle.
 - Lecture simplifiée du test statistique affiché (`Chi2`, `ddl`, `p`) pour une compréhension immédiate de direction.
+
+## 9) Logique de la page Maturité
+La page Maturité est structurée pour une lecture de direction en trois niveaux :
+1. **Lecture d’ensemble** (ce qui est installé, hétérogène, à structurer).
+2. **Lecture par dimensions** (appétence, maturité d’usage, valeur métier, gouvernance, industrialisation, diffusion) avec faits marquants.
+3. **Mise en perspective** pour comprendre la dynamique globale.
+
+### Factuel vs prescriptif
+- En mode `Description seule = Oui` : la page reste strictement descriptive.
+- En mode `Description seule = Non` : une courte lecture prescriptive est ajoutée et explicitement marquée.
