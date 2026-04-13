@@ -41,14 +41,14 @@ pip install -r requirements.txt
 streamlit run app/streamlit_app.py
 ```
 
-## 7) Intégration éditoriale du deck COMEX
-L’application intègre une sélection raisonnée du deck COMEX (et non un copier-coller).
+## 7) Intégration éditoriale du deck CoDir
+L’application intègre une sélection raisonnée du deck CoDir (et non un copier-coller).
 
 ### Ce qui a été repris
 - Message directeur d’ouverture (passage de l’exploration à l’exécution pilotée).
 - Storyline en quatre messages pour structurer la lecture de direction.
 - Bloc décisionnel en quatre arbitrages sur la vue de priorisation.
-- Renforcement de la hiérarchie de lecture sur le cockpit COMEX.
+- Renforcement de la hiérarchie de lecture sur le cockpit CoDir.
 
 ### Ce qui n’a pas été repris
 - Annexes trop détaillées slide par slide.
@@ -66,4 +66,5 @@ Principe appliqué : chaque tableau croisé doit être lisible sans connaissance
 - Pas de colonnes ou lignes ambiguës `Yes` / `No` affichées seules.
 - Libellés binaires explicités en français (usage au travail, usage personnel, early adopters).
 - Sous-titres d’aide pour préciser le sens des lignes et des colonnes.
-- Totaux de ligne/colonne et pourcentages par ligne pour faciliter l’interprétation COMEX.
+- Totaux de ligne/colonne et pourcentages par ligne pour faciliter l’interprétation CoDir.
+- Lecture simplifiée du test statistique affiché (`Chi2`, `ddl`, `p`) pour une compréhension immédiate de direction.
